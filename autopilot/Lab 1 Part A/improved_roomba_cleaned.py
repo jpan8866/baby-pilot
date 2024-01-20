@@ -32,7 +32,7 @@ def compute_turn_direction(scan_list: list) -> str:
 
 def get_scan_list():
     scan_list = []
-    while not scan_list:
+    while not scan_list or len(scan_list) != 10:
         # use ref of 50 for more buffer distance to allow for full sweep of ultrasonic sensor
         scan_list = fc.scan_step(50)
     return scan_list.copy()
