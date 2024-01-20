@@ -5,7 +5,7 @@ import picar_4wd as fc
 import time
 
 speed = 10
-
+scan_ref = 45
 
 def compute_turn_direction(scan_list: list) -> str:
     # figure out what direction to turn (90 deg)
@@ -34,13 +34,13 @@ def get_scan_list():
     scan_list = []
     while not scan_list or len(scan_list) != 10:
         # use ref of 50 for more buffer distance to allow for full sweep of ultrasonic sensor
-        scan_list = fc.scan_step(50)
+        scan_list = fc.scan_step(scan_ref)
     return scan_list.copy()
 
 
 def main():
     while True:
-        scan_list = fc.scan_step(50)
+        scan_list = fc.scan_step(scan_ref)
         # wait for a full sweep before driving off
         if not scan_list or len(scan_list) != 10:
             continue
