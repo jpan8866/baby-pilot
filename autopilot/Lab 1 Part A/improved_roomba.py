@@ -4,7 +4,7 @@ import picar_4wd as fc
 
 import time
 
-speed = 30
+speed = 10
 turn_duration = 4  # calculated by taking car_length / speed
 
 
@@ -38,14 +38,14 @@ def compute_turn_direction(scan_list: list) -> str:
 
 def straighten_left(scan_list):
     while any(s == 2 for s in scan_list[:3]):
-        fc.turn_left()
+        fc.turn_left(speed)
         # Remember to recheck the scan_list after each turn
         scan_list = fc.scan_step(35)
 
 def straighten_right(scan_list):
     # turn right
     while any(s == 2 for s in scan_list[8:]):
-        fc.turn_right()
+        fc.turn_right(speed)
         # Remember to recheck the scan_list after each turn
         scan_list = fc.scan_step(35)
 
@@ -60,7 +60,7 @@ def main():
             continue
 
         tmp = scan_list[3:7]
-        print(tmp)
+        print("tmp". tmp)
 
         if tmp != [2, 2, 2, 2]: # directly in front of car
             if direction == "forward":
