@@ -71,7 +71,7 @@ def main():
         tmp = scan_list[4:6]
         print("tmp", scan_list, tmp)
 
-        if tmp != [2, 2, 2, 2]: # directly in front of car
+        if tmp != [2, 2]: # directly in front of car
             if direction == "forward":
                 print("obstacle")
                 gear(is_drive=False)  # Stop if obstacle detected
