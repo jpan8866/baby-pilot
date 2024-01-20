@@ -42,7 +42,7 @@ def straighten_left(scan_list):
         # Remember to recheck the scan_list after each turn
         scan_list = fc.scan_step(35)
 
-def straighten_right():
+def straighten_right(scan_list):
     # turn right
     while any(s == 2 for s in scan_list[8:]):
         fc.turn_right()
@@ -53,8 +53,9 @@ def main():
     turn_start_time = 0
     direction = "forward"
     while True:
-        scan_list = fc.scan_step(35)
 
+        scan_list = fc.scan_step(35)
+        print(turn_start_time, direction, scan_list)
         if not scan_list:
             continue
 
