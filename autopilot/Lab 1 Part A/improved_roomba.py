@@ -60,7 +60,7 @@ def main():
             continue
 
         tmp = scan_list[3:7]
-        print("tmp". tmp)
+        print("tmp", tmp)
 
         if tmp != [2, 2, 2, 2]: # directly in front of car
             if direction == "forward":
