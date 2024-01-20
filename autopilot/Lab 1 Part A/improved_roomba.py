@@ -5,7 +5,7 @@ import picar_4wd as fc
 import time
 
 speed = 10
-turn_duration = 4  # calculated by taking car_length / speed
+turn_duration = 2  # calculated by taking car_length / speed
 
 
 def gear(is_drive: bool):
