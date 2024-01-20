@@ -25,7 +25,7 @@ def compute_turn_direction(scan_list: list) -> str:
         print("turning right")
         fc.turn_right(speed)
         return "right"
-    elif scan_list[:3] == [2, 2,2]:
+    elif scan_list[:3] == [2, 2, 2]:
         print("turning left")
         fc.turn_left(speed)
         return "left"
@@ -80,10 +80,10 @@ def main():
                 if elapsed_time >= turn_duration:
                     print("turning back to original heading")
                     if direction == "right":
-                        straighten_left()
+                        straighten_left(scan_list)
                         direction = "forward"
                     elif direction == "left":
-                        straighten_right()
+                        straighten_right(scan_list)
                         direction = "forward"
 
 if __name__ == "__main__":
