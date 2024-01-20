@@ -60,7 +60,7 @@ def main():
 
         scan_list = fc.scan_step(35)
         print(turn_start_time, direction, scan_list)
-        if not scan_list or len(scan_list) != 11:
+        if not scan_list or len(scan_list) != 10:
             continue
 
         tmp = scan_list[3:7]
@@ -78,7 +78,7 @@ def main():
                 # turn back straight (optional)
             # else keep turning
         else:
-            gear(is_drive=True) # move forward in current direction
+            fc.forward(speed) # move forward in current direction
             if direction != "forward":
                 # measure time since last loop here
                 elapsed_time = time.time() - turn_start_time
