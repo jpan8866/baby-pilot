@@ -60,7 +60,7 @@ def main():
 
         scan_list = fc.scan_step(35)
         print(turn_start_time, direction, scan_list)
-        if not scan_list:
+        if not scan_list or len(scan_list) != 11:
             continue
 
         tmp = scan_list[3:7]
