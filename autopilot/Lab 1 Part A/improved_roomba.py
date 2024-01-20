@@ -18,10 +18,10 @@ def gear(is_drive: bool):
 def compute_turn_direction(scan_list: list) -> str:
     # figure out what direction to turn (90 deg)
     # if either side is not 2, turn right
-    if scan_list[:3] == [2,2,2] and scan_list[8:] == [2,2,2]:
+    if scan_list[:3] == [2,2,2] and scan_list[7:] == [2,2,2]:
         fc.turn_right(speed)
         return "right"
-    elif scan_list[8:] == [2, 2, 2]:
+    elif scan_list[7:] == [2, 2, 2]:
         print("turning right")
         fc.turn_right(speed)
         return "right"
