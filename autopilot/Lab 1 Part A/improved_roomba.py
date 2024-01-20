@@ -54,7 +54,7 @@ def straighten_right(scan_list):
 def get_scan_list():
     scan_list = []
     while not scan_list:
-        scan_list = fc.scan_step(40)
+        scan_list = fc.scan_step(50)
     return scan_list.copy()
 
 
@@ -63,7 +63,7 @@ def main():
     direction = "forward"
     while True:
 
-        scan_list = fc.scan_step(40)
+        scan_list = fc.scan_step(50)
         print(turn_start_time, direction, scan_list)
         if not scan_list or len(scan_list) != 10:  # wait for a full sweep before driving off
             continue
