@@ -64,7 +64,7 @@ def main():
     while True:
 
         scan_list = fc.scan_step(50)
-        print(turn_start_time, direction, scan_list)
+        print(turn_start_time, scan_list)
         if not scan_list or len(scan_list) != 10:  # wait for a full sweep before driving off
             continue
 
