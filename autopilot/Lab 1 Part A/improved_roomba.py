@@ -18,9 +18,11 @@ def compute_turn_direction(scan_list: list):
     if scan_list[:4] == [2,2,2,2] or scan_list[7:] == [2,2,2,2]:
         fc.turn_right(speed)
     elif scan_list[:4] != [2,2,2,2]:
-        fc.turn_right(speed)
+        print("turning right")
+        # fc.turn_right(speed)
     else:
-        fc.turn_left(speed)
+        print("turning left")
+        # fc.turn_left(speed)
 
 
 def main():
