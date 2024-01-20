@@ -33,21 +33,25 @@ def compute_turn_direction(scan_list: list) -> str:
         print("boxed in")
         fc.backward(speed)
         time.sleep(turn_duration)
-        fc.turn_right()
+        fc.turn_right(speed)
         return "right"
 
 def straighten_left(scan_list):
     while any(s == 2 for s in scan_list[:3]):
         fc.turn_left(speed)
         # Remember to recheck the scan_list after each turn
-        scan_list = fc.scan_step(35)
+        scan_list = []
+        while not scan_list:
+            scan_list = fc.scan_step(35)
 
 def straighten_right(scan_list):
     # turn right
     while any(s == 2 for s in scan_list[8:]):
         fc.turn_right(speed)
         # Remember to recheck the scan_list after each turn
-        scan_list = fc.scan_step(35)
+        scan_list = []
+        while not scan_list:
+            scan_list = fc.scan_step(35)
 
 def main():
     turn_start_time = 0
@@ -60,13 +64,13 @@ def main():
             continue
 
         tmp = scan_list[3:7]
-        print("tmp", tmp)
+        print("tmp", scan_list, tmp)
 
         if tmp != [2, 2, 2, 2]: # directly in front of car
             if direction == "forward":
                 print("obstacle")
                 gear(is_drive=False)  # Stop if obstacle detected
-                direction = compute_turn_direction(scan_list)
+                direction = compute_turn_direction(scan_list.copy())
                 turn_start_time = time.time()
                 # logic to check whether to turn right or left
                 # straight until does not sense anything on either side + 2 more second to let whole body get accross
@@ -81,10 +85,10 @@ def main():
                 if elapsed_time >= turn_duration:
                     print("turning back to original heading")
                     if direction == "right":
-                        straighten_left(scan_list)
+                        straighten_left(scan_list.copy())
                         direction = "forward"
                     elif direction == "left":
-                        straighten_right(scan_list)
+                        straighten_right(scan_list.copy())
                         direction = "forward"
 
 if __name__ == "__main__":
