@@ -17,6 +17,10 @@ def compute_turn_direction(scan_list: list):
     # if either side is not 2, turn right
     if scan_list[:4] == [2,2,2,2] or scan_list[7:] == [2,2,2,2]:
         fc.turn_right(speed)
+    elif scan_list[:4] != [2,2,2,2]:
+        fc.turn_right(speed)
+    else:
+        fc.turn_left(speed)
 
 
 def main():
@@ -32,6 +36,7 @@ def main():
         if tmp != [2, 2, 2, 2]: # directly in front of car
             print("obstacle")
             gear(is_drive=False)  # Stop if obstacle detected
+            compute_turn_direction(scan_list)
             # logic to check whether to turn right or left
             # straight until does not sense anything on either side + 2 more second to let whole body get accross
             # turn back same amount of seconds
