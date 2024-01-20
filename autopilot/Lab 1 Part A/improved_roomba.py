@@ -18,14 +18,14 @@ def gear(is_drive: bool):
 def compute_turn_direction(scan_list: list) -> str:
     # figure out what direction to turn (90 deg)
     # if either side is not 2, turn right
-    if scan_list[:2] == [2,2] and scan_list[8:] == [2,2]:
+    if scan_list[:3] == [2, 2, 2] and scan_list[7:] == [2, 2, 2]:
         fc.turn_right(speed)
         return "right"
-    elif scan_list[8:] == [2, 2]:
+    elif scan_list[7:] == [2, 2, 2]:
         print("turning right")
         fc.turn_right(speed)
         return "right"
-    elif scan_list[:2] == [2, 2]:
+    elif scan_list[:3] == [2, 2, 2]:
         print("turning left")
         fc.turn_left(speed)
         return "left"
@@ -35,52 +35,48 @@ def compute_turn_direction(scan_list: list) -> str:
         new_scan_list = get_scan_list()
         return compute_turn_direction(new_scan_list)
 
+
 def straighten_left(scan_list):
     while any(s == 2 for s in scan_list[:3]):
         fc.turn_left(speed)
         # Remember to recheck the scan_list after each turn
-        scan_list = []
-        while not scan_list:
-            scan_list = fc.scan_step(35)
+        scan_list = get_scan_list()
+
 
 def straighten_right(scan_list):
     # turn right
     while any(s == 2 for s in scan_list[8:]):
         fc.turn_right(speed)
         # Remember to recheck the scan_list after each turn
-        scan_list = []
-        while not scan_list:
-            scan_list = fc.scan_step(35)
+        scan_list = get_scan_list()
+
 
 def get_scan_list():
     scan_list = []
     while not scan_list:
-        scan_list = fc.scan_step(35)
+        scan_list = fc.scan_step(40)
     return scan_list.copy()
+
 
 def main():
     turn_start_time = 0
     direction = "forward"
     while True:
 
-        scan_list = fc.scan_step(35)
+        scan_list = fc.scan_step(40)
         print(turn_start_time, direction, scan_list)
-        if not scan_list or len(scan_list) != 10:
+        if not scan_list or len(scan_list) != 10:  # wait for a full sweep before driving off
             continue
 
-        tmp = scan_list[4:6]
+        tmp = scan_list[3:7]
         print("tmp", scan_list, tmp)
 
-        if tmp != [2, 2]: # directly in front of car
+        if tmp != [2, 2, 2, 2]:
             if direction == "forward":
-                print("obstacle")
-                gear(is_drive=False)  # Stop if obstacle detected
+                print("Encountered obstacle")
+                fc.stop()
                 direction = compute_turn_direction(scan_list.copy())
-                turn_start_time = time.time()
-                # logic to check whether to turn right or left
-                # straight until does not sense anything on either side + 2 more second to let whole body get accross
-                # turn back same amount of seconds
-                # turn back straight (optional)
+                # turn_start_time = time.time()
             # else keep turning
         else:
             fc.forward(speed) # move forward in current direction
