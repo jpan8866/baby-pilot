@@ -60,7 +60,7 @@ def get_scan_list():
 
 def main():
     turn_start_time = 0
-    direction = "forward"
+    # direction = "forward"
     while True:
 
         scan_list = fc.scan_step(50)
@@ -72,11 +72,11 @@ def main():
         print("tmp", scan_list, tmp)
 
         if tmp != [2, 2, 2, 2]:
-            if direction == "forward":
-                print("Encountered obstacle")
-                fc.stop()
-                direction = compute_turn_direction(scan_list.copy())
-                # turn_start_time = time.time()
+            # if direction == "forward":
+            print("Encountered obstacle")
+            fc.stop()
+            direction = compute_turn_direction(scan_list.copy())
+            # turn_start_time = time.time()
             # else keep turning
         else:
             fc.forward(speed) # move forward in current direction
