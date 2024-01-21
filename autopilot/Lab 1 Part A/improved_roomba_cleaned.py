@@ -40,10 +40,7 @@ def get_scan_list():
 
 def main():
     while True:
-        scan_list = fc.scan_step(scan_ref)
-        # waits for a full sweep before driving off
-        if not scan_list or len(scan_list) != 10:
-            continue
+        scan_list = get_scan_list()
 
         tmp = scan_list[3:7]
         print("tmp", scan_list, tmp)
