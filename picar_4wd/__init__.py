@@ -86,7 +86,7 @@ ANGLE_RANGE = 180
 STEP = 18
 us_step = STEP
 angle_distance = [0,0]
-current_angle = -STEP
+current_angle = 0
 max_angle = ANGLE_RANGE/2
 min_angle = -ANGLE_RANGE/2
 scan_list = []
@@ -136,7 +136,6 @@ def get_status_at(angle, ref1=35, ref2=10):
 def scan_step(ref):
     global scan_list, current_angle, us_step
     current_angle += us_step
-    print(current_angle)
     if current_angle >= max_angle:
         current_angle = max_angle
         us_step = -STEP
