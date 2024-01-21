@@ -45,9 +45,8 @@ def main():
         if not scan_list or len(scan_list) != 10:
             continue
 
-        print(scan_list)
         tmp = scan_list[3:7]
-        # print("tmp", scan_list, tmp)
+        print("tmp", scan_list, tmp)
 
         if tmp != [2, 2, 2, 2]:
             print("Encountered obstacle, tmp: ", tmp)
