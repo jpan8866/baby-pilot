@@ -136,6 +136,7 @@ def get_status_at(angle, ref1=35, ref2=10):
 def scan_step(ref):
     global scan_list, current_angle, us_step
     current_angle += us_step
+    print(current_angle)
     if current_angle >= max_angle:
         current_angle = max_angle
         us_step = -STEP
