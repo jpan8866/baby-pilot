@@ -45,6 +45,7 @@ def main():
         if not scan_list:
             continue
 
+        print(scan_list)
         tmp = scan_list[3:7]
         # print("tmp", scan_list, tmp)
 
