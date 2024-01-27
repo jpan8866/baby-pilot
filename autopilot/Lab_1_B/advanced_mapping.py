@@ -1,10 +1,11 @@
 import numpy as np
+from utils import visualize_map
 # import picar_4wd as fc
 # from picar_4wd import get_distance_at
 
 # Constants
-GRID_SIZE = 20
-CAR_POS = (10, 0)
+GRID_SIZE = 100
+CAR_POS = (GRID_SIZE//2, 0)
 ANGLE_INCREMENT = 10
 MAX_DISTANCE = 0.8 * GRID_SIZE  # limit distance to filter out noise
 
@@ -23,7 +24,7 @@ def polar_to_cartesian(angle, distance):
     y = distance * np.cos(radian)
     return int(x), int(y)
 
-#
+
 def update_grid(angle, distance, last_angle, last_distance):
     """
     Update the grid based on the sensor reading.
@@ -61,7 +62,7 @@ def scan_environment():
         last_distance = distance
 
 import random
-random.seed(88)
+# random.seed(88)
 def read_ultrasonic_sensor(angle):
     """
     Placeholder function to simulate an ultrasonic sensor reading at a given angle.
@@ -69,7 +70,7 @@ def read_ultrasonic_sensor(angle):
     Simulated with random number between 1 and 100
     """
     # Example: return a fixed distance for testing
-    return random.randint(1,20)  # Replace with actual sensor reading
+    return random.randint(1, GRID_SIZE)  # Replace with actual sensor reading
 
 
 def draw_line(x0, y0, x1, y1):
@@ -97,8 +98,13 @@ def draw_line(x0, y0, x1, y1):
             err += dx
             y0 += sy
 
+
+
+
 # Example usage
 scan_environment()
 print(grid)
+
+visualize_map(grid)
 
 
