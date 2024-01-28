@@ -1,6 +1,6 @@
 import numpy as np
-from utils import visualize_map
-# import picar_4wd as fc
+# from utils import visualize_map
+import picar_4wd as fc
 # from picar_4wd import get_distance_at
 
 # Constants
@@ -52,8 +52,7 @@ def scan_environment():
     last_distance = None
     for angle in range(-90, 91, ANGLE_INCREMENT):
         # Ignore distances that are beyond our max range. This avoids unnecessary maneuvers based on distant objects
-        #todo: Replace with actual sensor reading function, get_distance_at()
-        if (distance := read_ultrasonic_sensor(angle)) > MAX_DISTANCE:
+        if (distance := fc.get_distance_at(angle)) > MAX_DISTANCE:
             continue
 
         update_grid(angle, distance, last_angle, last_distance)
@@ -105,6 +104,6 @@ def draw_line(x0, y0, x1, y1):
 scan_environment()
 print(grid)
 
-visualize_map(grid)
+# visualize_map(grid)
 
 
