@@ -54,7 +54,6 @@ def scan_environment():
         # Ignore distances that are beyond our max range. This avoids unnecessary maneuvers based on distant objects
         if (distance := fc.get_distance_at(angle)) > MAX_DISTANCE:
             continue
-        print(angle, distance)
         update_grid(angle, distance, last_angle, last_distance)
 
         last_angle = angle
@@ -102,8 +101,8 @@ def draw_line(x0, y0, x1, y1):
 
 # Example usage
 scan_environment()
+np.set_printoptions(threshold=np.inf)
 print(grid)
-
 # visualize_map(grid)
 
 
