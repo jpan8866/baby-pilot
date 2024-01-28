@@ -4,7 +4,7 @@ import picar_4wd as fc
 # from picar_4wd import get_distance_at
 
 # Constants
-GRID_SIZE = 30
+GRID_SIZE = 50
 CAR_POS = (GRID_SIZE//2, 0)
 ANGLE_INCREMENT = 10
 MAX_DISTANCE = 0.8 * GRID_SIZE  # limit distance to filter out noise
@@ -50,6 +50,7 @@ def scan_environment():
     """
     last_angle = None
     last_distance = None
+    #todo: read from last angle to avoid always turning to -90 first
     for angle in range(-90, 91, ANGLE_INCREMENT):
         # Ignore distances that are beyond our max range. This avoids unnecessary maneuvers based on distant objects
         if (distance := fc.get_distance_at(angle)) > MAX_DISTANCE:
@@ -101,7 +102,7 @@ def draw_line(x0, y0, x1, y1):
 
 # Example usage
 scan_environment()
-np.set_printoptions(threshold=np.inf)
+np.set_printoptions(threshold=np.inf, linewidth=np.inf)
 print(grid)
 # visualize_map(grid)
 
