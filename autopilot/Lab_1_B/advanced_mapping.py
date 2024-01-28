@@ -4,7 +4,7 @@ import picar_4wd as fc
 # from picar_4wd import get_distance_at
 
 # Constants
-GRID_SIZE = 50
+GRID_SIZE = 30
 CAR_POS = (GRID_SIZE//2, 0)
 ANGLE_INCREMENT = 10
 MAX_DISTANCE = 0.8 * GRID_SIZE  # limit distance to filter out noise
