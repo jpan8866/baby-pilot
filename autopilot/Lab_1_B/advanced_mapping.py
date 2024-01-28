@@ -32,6 +32,7 @@ def update_grid(angle, distance, last_angle, last_distance):
     x1, y1 = polar_to_cartesian(angle, distance)
     x1 += CAR_POS[0]
     y1 += CAR_POS[1]
+    print(x1, y1, distance, angle, last_angle, last_distance)
 
     if last_angle is not None and abs(last_angle - angle) == ANGLE_INCREMENT:
         # Interpolate between the last point and the current point if the delta is 1 angle increment
