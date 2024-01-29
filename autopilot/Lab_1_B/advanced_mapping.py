@@ -17,10 +17,10 @@ def polar_to_cartesian(angle, distance):
     """
     Convert polar coordinates (angle in degrees, distance) to Cartesian coordinates.
     Note that we consider angles in the 2nd to 1st quadrants
-    Angles are measured wrt positive Y-axis (r -> neg, l -> pos)
+    Angles are measured wrt positive Y-axis (cw -> neg, ccw -> pos)
     """
     radian = np.radians(angle)
-    x = distance * np.sin(radian)
+    x = -distance * np.sin(radian)
     y = distance * np.cos(radian)
     return int(x), int(y)
 
@@ -104,7 +104,7 @@ def draw_line(x0, y0, x1, y1):
 # Example usage
 scan_environment()
 np.set_printoptions(threshold=np.inf, linewidth=np.inf)
-print(grid)
+print(np.transpose(grid))
 # visualize_map(grid)
 
 
