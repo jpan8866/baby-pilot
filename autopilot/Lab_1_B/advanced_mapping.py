@@ -55,7 +55,7 @@ def scan_environment():
     #todo: read from last angle to avoid always turning to -90 first
     for angle in range(-90, 91, ANGLE_INCREMENT):
         # Ignore distances that are beyond our max range. This avoids unnecessary maneuvers based on distant objects
-        if (distance := fc.get_distance_at(angle)) > MAX_DISTANCE:
+        if not 0 <= (distance := fc.get_distance_at(angle)) <= MAX_DISTANCE:
             continue
         update_grid(angle, distance, last_angle, last_distance)
 
@@ -112,7 +112,7 @@ grid[CAR_POS] = 2
 visual_grid = np.transpose(grid)
 # Display the transposed grid
 plt.figure(figsize=(8, 8))
-plt.title("Transposed Grid")
+plt.title("Mapping")
 plt.imshow(visual_grid, cmap='gray', origin='lower')
 plt.colorbar()
 plt.show()
