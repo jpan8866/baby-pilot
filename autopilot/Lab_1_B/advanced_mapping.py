@@ -104,8 +104,8 @@ def draw_line(x0, y0, x1, y1):
 
 # Example usage
 scan_environment()
-# np.set_printoptions(threshold=np.inf, linewidth=np.inf)
-# print(np.transpose(grid))
+np.set_printoptions(threshold=np.inf, linewidth=np.inf)
+print(np.transpose(grid))
 # visualize_map(grid)
 
 grid[CAR_POS] = 2
