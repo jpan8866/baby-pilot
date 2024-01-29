@@ -20,7 +20,7 @@ def polar_to_cartesian(angle, distance):
     Angles are measured wrt positive Y-axis (r -> neg, l -> pos)
     """
     radian = np.radians(angle)
-    x = -distance * np.sin(radian)
+    x = distance * np.sin(radian)
     y = distance * np.cos(radian)
     return int(x), int(y)
 
