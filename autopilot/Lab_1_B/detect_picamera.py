@@ -47,6 +47,9 @@ with picamera.PiCamera() as camera:
             if frame is None or len(frame) == 0:
                 continue  # Skip processing this frame
             # Convert the frame to an RGB image
+            # from: https://stackoverflow.com/questions/65375839/read-last-frame-from-picamera-ring-buffer
+            # camera.capture(rawCapture, format="bgr", use_video_port=True)
+            # frame = rawCapture.array
             image = cv2.imdecode(np.frombuffer(frame, dtype=np.uint8), cv2.IMREAD_COLOR)
             rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
