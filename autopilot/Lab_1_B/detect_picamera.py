@@ -45,7 +45,7 @@ with picamera.PiCamera() as camera:
             frame = stream.getvalue()
 
             # Convert the frame to an RGB image
-            image = cv2.imdecode(np.frombuffer(frame, dtype=np.uint8), cv2.IMREAD_COLOR)
+            image = frame.array
             rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
             # Create a TensorImage object from the RGB image.
