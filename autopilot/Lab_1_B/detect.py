@@ -88,7 +88,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     # Run object detection estimation using the model.
     detection_result = detector.detect(input_tensor)
     if detection_result:
-        for detection in detection_result:
+        for detection in detection_result.detections:
             print(detection)
 
     # print(detection_result)
