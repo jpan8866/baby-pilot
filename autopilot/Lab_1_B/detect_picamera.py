@@ -4,6 +4,7 @@ import cv2
 from tflite_support.task import core
 from tflite_support.task import processor
 from tflite_support.task import vision
+import numpy as np
 
 # Initialize the object detection model (replace with your own model initialization)
 model_path = 'efficientdet_lite0.tflite'
