@@ -43,9 +43,11 @@ with picamera.PiCamera() as camera:
             # Capture the latest frame from the circular buffer
             camera.wait_recording(0)
             frame = stream.getvalue()
-
+            # Check if the frame is empty or invalid
+            if frame is None or len(frame) == 0:
+                continue  # Skip processing this frame
             # Convert the frame to an RGB image
-            image = frame.array
+            image = cv2.imdecode(np.frombuffer(frame, dtype=np.uint8), cv2.IMREAD_COLOR)
             rgb_image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
             # Create a TensorImage object from the RGB image.
