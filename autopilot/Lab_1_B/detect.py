@@ -89,7 +89,13 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     detection_result = detector.detect(input_tensor)
     if detection_result:
         for detection in detection_result.detections:
-            print(detection)
+            category = detection.categories[0]
+            category_name = category.category_name
+            probability = round(category.score, 2)
+            print("Object: " + category_name, "probability: " + str(probability))
+            if category_name in ["person", "stop sign"]:
+                # todo: actually stop car, restart car after y condition
+                print("STOP CAR")
 
     # print(detection_result)
 
@@ -115,7 +121,7 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
     # cv2.imshow('object_detector', image)
 
   cap.release()
-  cv2.destroyAllWindows()
+  # cv2.destroyAllWindows()
 
 
 def main():
