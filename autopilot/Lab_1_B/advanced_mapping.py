@@ -8,7 +8,7 @@ GRID_SIZE = 50
 CAR_POS = (GRID_SIZE//2, 0)
 ANGLE_INCREMENT = 10
 MAX_DISTANCE = 0.8 * GRID_SIZE  # limit distance to filter out noise
-
+PADDING_SIZE = 1  # number of cells to pad around a point in grid
 # Initialize the grid
 grid = np.zeros((GRID_SIZE, GRID_SIZE))
 
@@ -42,7 +42,19 @@ def update_grid(angle, distance, last_angle, last_distance):
 
         draw_line(x0, y0, x1, y1)
     elif 0 <= x1 < GRID_SIZE and 0 <= y1 < GRID_SIZE:
-        grid[x1, y1] = 1
+        add_point(x1, y1)
+
+
+def add_point(x, y):
+    """
+    Add padding of number of cells equal to padding_size in each direction around a given point (x, y) in the grid.
+    """
+    for i in range(-PADDING_SIZE, PADDING_SIZE+1):
+        for j in range(-PADDING_SIZE, PADDING_SIZE+1):
+            new_x = x + i
+            new_y = y + j
+            if 0 <= new_x < GRID_SIZE and 0 <= new_y < GRID_SIZE:
+                grid[new_x, new_y] = 1
 
 
 def scan_environment():
@@ -75,7 +87,7 @@ def draw_line(x0, y0, x1, y1):
 
     while True:
         if 0 <= x0 < GRID_SIZE and 0 <= y0 < GRID_SIZE:
-            grid[x0, y0] = 1  # Set the point on the grid
+            add_point(x0, y0)  # Set the point on the grid
 
         if x0 == x1 and y0 == y1:
             break
