@@ -32,7 +32,7 @@ def update_grid(angle, distance, last_angle, last_distance):
     x1, y1 = polar_to_cartesian(angle, distance)
     x1 += CAR_POS[0]
     y1 += CAR_POS[1]
-    print(x1, y1, distance, angle, last_angle, last_distance)
+    # print(x1, y1, distance, angle, last_angle, last_distance)
 
     if last_angle is not None and abs(last_angle - angle) == ANGLE_INCREMENT:
         # Interpolate between the last point and the current point if the delta is 1 angle increment
@@ -101,17 +101,18 @@ def draw_line(x0, y0, x1, y1):
             y0 += sy
 
 
+# ------------------- Uncomment below for testing purposes ------------------
 # Example usage
-scan_environment()
-np.set_printoptions(threshold=np.inf, linewidth=np.inf)
-print(np.transpose(grid))
+# scan_environment()
+# np.set_printoptions(threshold=np.inf, linewidth=np.inf)
+# print(np.transpose(grid))
 # visualize_map(grid)
 
-grid[CAR_POS] = 2
-visual_grid = np.transpose(grid)
-# Display the transposed grid
-plt.figure(figsize=(8, 8))
-plt.title("Mapping")
-plt.imshow(visual_grid, cmap='gray', origin='lower')
-plt.colorbar()
-plt.show()
+# grid[CAR_POS] = 2
+# visual_grid = np.transpose(grid)
+# # Display the transposed grid
+# plt.figure(figsize=(8, 8))
+# plt.title("Mapping")
+# plt.imshow(visual_grid, cmap='gray', origin='lower')
+# plt.colorbar()
+# plt.show()
