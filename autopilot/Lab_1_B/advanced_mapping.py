@@ -72,6 +72,7 @@ def scan_environment():
 
         last_angle = angle
         last_distance = distance
+    return grid
 
 
 def draw_line(x0, y0, x1, y1):
