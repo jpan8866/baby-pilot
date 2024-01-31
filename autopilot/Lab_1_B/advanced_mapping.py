@@ -2,7 +2,6 @@ import numpy as np
 # from utils import visualize_map
 import matplotlib.pyplot as plt
 import picar_4wd as fc
-# from picar_4wd import get_distance_at
 
 # Constants
 GRID_SIZE = 50
@@ -62,17 +61,6 @@ def scan_environment():
         last_angle = angle
         last_distance = distance
 
-import random
-# random.seed(88)
-def read_ultrasonic_sensor(angle):
-    """
-    Placeholder function to simulate an ultrasonic sensor reading at a given angle.
-    Replace this with the actual sensor reading logic.
-    Simulated with random number between 1 and 100
-    """
-    # Example: return a fixed distance for testing
-    return random.randint(1, GRID_SIZE)  # Replace with actual sensor reading
-
 
 def draw_line(x0, y0, x1, y1):
     """
@@ -98,8 +86,6 @@ def draw_line(x0, y0, x1, y1):
         if e2 <= dx:  # e_xy + e_y < 0
             err += dx
             y0 += sy
-
-
 
 
 # Example usage

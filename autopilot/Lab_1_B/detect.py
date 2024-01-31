@@ -26,7 +26,7 @@ import cv2
 from tflite_support.task import core
 from tflite_support.task import processor
 from tflite_support.task import vision
-import utils_apache as utils
+#import utils_apache as utils  # if you want live video feed
 
 
 def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
@@ -94,17 +94,17 @@ def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
 
     # Calculate the FPS
     #todo: revist below calculation
-    # end_time = time.time()
-    # elapsed_time = end_time - start_time
-    # if elapsed_time > 1.0:  # Update the FPS every 1 second
-    #     fps = counter / elapsed_time
-    #     print(f"Frame rate: {fps:.2f} FPS")
-    #     frame_count = 0
-    #     start_time = time.time()
-    if counter % fps_avg_frame_count == 0:
-      end_time = time.time()
-      fps = fps_avg_frame_count / (end_time - start_time)
-      start_time = time.time()
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    if elapsed_time > 1.0:  # Update the FPS every 1 second
+        fps = counter / elapsed_time
+        print(f"Frame rate: {fps:.2f} FPS")
+        counter = 0
+        start_time = time.time()
+    # if counter % fps_avg_frame_count == 0:
+    #   end_time = time.time()
+    #   fps = fps_avg_frame_count / (end_time - start_time)
+    #   start_time = time.time()
 
     # Print the FPS
     print("fps: " + str(fps))
