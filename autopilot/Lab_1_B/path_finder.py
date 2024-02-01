@@ -19,8 +19,8 @@ class Node:
 # Heuristics
 # use manhattan for 4 directions
 def manhattan_distance(start, goal):
-    # for tie breaking, multiply h by 1+p, where p = 1/expected maximum path length
-    return (1 + 1 / (2 * 50)) * abs(start.x - goal.x) + abs(start.y - goal.y)
+    # for tie breaking, multiply h by 1+p, where p < 1/expected maximum path length
+    return (1 + 1 / (4 * 50)) * (abs(start.x - goal.x) + abs(start.y - goal.y))
 
 
 # use euclidean for > 8 directions
