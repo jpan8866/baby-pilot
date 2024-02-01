@@ -1,4 +1,5 @@
 import heapq
+from itertools import count
 
 class Node:
     def __init__(self, x, y, g=0, h=0, f=0, parent=None):
@@ -38,7 +39,8 @@ def a_star_search_4dir(grid, start, goal):
     open_set = []
     # set h of start
     start.f = manhattan_distance(start, goal)  # f = g + h = 0 + manhattan_distance
-    heapq.heappush(open_set, (start.f, start))
+    counter = count()  # use as secondary sorting criterion for primary queue
+    heapq.heappush(open_set, (start.f, next(counter), start))
     closed_set = set()
 
     while open_set:
@@ -59,20 +61,20 @@ def a_star_search_4dir(grid, start, goal):
             neighbor.h = manhattan_distance(neighbor, goal)
             neighbor.f = neighbor.g + neighbor.h
 
-            if add_to_open(open_set, neighbor):
-                heapq.heappush(open_set, (neighbor.f, neighbor))
+            if add_to_open(open_set, neighbor, counter):
+                heapq.heappush(open_set, (neighbor.f, next(counter), neighbor))
 
     return None
 
-def add_to_open(open_set, neighbor):
+def add_to_open(open_set, neighbor, counter):
     # open_set contains next nodes to visit
-    for i, (f, node) in enumerate(open_set):
-        if (neighbor.x, neighbor.y) == (node.x, node.y):
+    for i, (f, _, node) in enumerate(open_set):
+        if neighbor == node:
             # if neighbor is already part of next nodes to visit (e.g. added thru another path
             # and that it cost less than what it currently does, then replace with new path cuz lesser cost
             # if it does not cost less, do not consider this path -> ignore neighbor
             if neighbor.g < node.g:
-                open_set[i] = (neighbor.f, neighbor)
+                open_set[i] = (neighbor.f, next(counter), neighbor)
             return False
     return True
 
