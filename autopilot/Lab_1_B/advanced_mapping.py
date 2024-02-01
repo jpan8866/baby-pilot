@@ -8,7 +8,7 @@ GRID_SIZE = 50
 CAR_POS = (GRID_SIZE//2, 0)
 ANGLE_INCREMENT = 10
 MAX_DISTANCE = 0.8 * GRID_SIZE  # limit distance to filter out noise
-PADDING_SIZE = 1  # number of cells to pad around a point in grid
+PADDING_SIZE = 2  # number of cells to pad around a point in grid
 # Initialize the grid
 grid = np.zeros((GRID_SIZE, GRID_SIZE))
 
