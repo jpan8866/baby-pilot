@@ -1,6 +1,7 @@
 import heapq
 from itertools import count
-
+GRID_SIZE = 50
+# todo: gather all constants into a settings file
 
 class Node:
     def __init__(self, x, y, g=0, h=0, f=0, parent=None):
@@ -18,7 +19,8 @@ class Node:
 # Heuristics
 # use manhattan for 4 directions
 def manhattan_distance(start, goal):
-    return abs(start.x - goal.x) + abs(start.y - goal.y)
+    # for tie breaking, multiply h by 1+p, where p = 1/expected maximum path length
+    return (1 + 1 / (2 * 50)) * abs(start.x - goal.x) + abs(start.y - goal.y)
 
 
 # use euclidean for > 8 directions
@@ -43,7 +45,7 @@ def a_star_search_4dir(grid, start, goal):
     open_set = []
     # set h of start
     start.f = manhattan_distance(start, goal)  # f = g + h = 0 + manhattan_distance
-    counter = count()  # use as secondary sorting criterion for primary queue
+    counter = count()  # use as secondary sorting criterion for primary queue for tie breaking
     heapq.heappush(open_set, (start.f, next(counter), start))
     closed_set = set()
 
