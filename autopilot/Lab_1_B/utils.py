@@ -28,16 +28,20 @@ def visualize_map(grid, scale=10):
     cv2.destroyAllWindows()
 
 
-def visualize_path(grid, path=[], car_pos=0):
+def visualize_path(grid, path=[]):
     if path:
         mark_path_on_grid(grid, path)
-    visual_grid = np.transpose(grid)
+    np.set_printoptions(threshold=np.inf, linewidth=np.inf)
+    print(np.transpose(grid))
+
+    # uncomment below if you have monitor plugged in to pi
     # Display the transposed grid
-    plt.figure(figsize=(8, 8))
-    plt.title("Routing")
-    plt.imshow(visual_grid, cmap='gray', origin='lower')
-    plt.colorbar()
-    plt.show()
+    # visual_grid = np.transpose(grid)
+    # plt.figure(figsize=(8, 8))
+    # plt.title("Routing")
+    # plt.imshow(visual_grid, cmap='gray', origin='lower')
+    # plt.colorbar()
+    # plt.show()
 
 
 def mark_path_on_grid(grid, path, path_value=3):
