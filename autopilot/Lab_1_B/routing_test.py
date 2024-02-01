@@ -4,7 +4,7 @@ from utils import visualize_path, visualize_map
 
 grid = scan_environment()
 visualize_path(grid)
-visualize_map
+visualize_map(grid)
 # Create a 50x50 grid where 0 represents empty cells
 GRID_SIZE = 50
 

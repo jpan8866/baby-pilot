@@ -11,6 +11,7 @@ def visualize_map(grid, scale=10):
     - grid: 2D numpy array representing the map.
     - scale: Factor to scale up the image for better visualization.
     """
+    grid = np.transpose(grid)
     # Scale up the grid for better visualization
     large_grid = cv2.resize(grid, (0, 0), fx=scale, fy=scale, interpolation=cv2.INTER_NEAREST)
     # Convert the grid to an 8-bit unsigned integer type
