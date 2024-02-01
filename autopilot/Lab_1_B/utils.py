@@ -28,8 +28,9 @@ def visualize_map(grid, scale=10):
     cv2.destroyAllWindows()
 
 
-def visualize_path(grid, path):
-    mark_path_on_grid(grid, path)
+def visualize_path(grid, path=[], car_pos=0):
+    if path:
+        mark_path_on_grid(grid, path)
     visual_grid = np.transpose(grid)
     # Display the transposed grid
     plt.figure(figsize=(8, 8))

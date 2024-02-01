@@ -3,7 +3,7 @@ from advanced_mapping import scan_environment
 from utils import visualize_path
 
 grid = scan_environment()
-
+visualize_path(grid, car_pos=2)
 # Create a 50x50 grid where 0 represents empty cells
 GRID_SIZE = 50
 
