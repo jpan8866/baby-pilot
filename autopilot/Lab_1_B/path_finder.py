@@ -62,6 +62,7 @@ def a_star_search_4dir(grid, start, goal):
             neighbor.g = current_node.g + 1
             neighbor.h = manhattan_distance(neighbor, goal)
             neighbor.f = neighbor.g + neighbor.h
+            neighbor.parent = current_node
 
             if add_to_open(open_set, neighbor, counter):
                 heapq.heappush(open_set, (neighbor.f, next(counter), neighbor))
