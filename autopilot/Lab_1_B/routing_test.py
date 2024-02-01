@@ -1,9 +1,10 @@
 from path_finder import a_star_search_4dir, Node
 from advanced_mapping import scan_environment
-from utils import visualize_path
+from utils import visualize_path, visualize_map
 
 grid = scan_environment()
 visualize_path(grid)
+visualize_map
 # Create a 50x50 grid where 0 represents empty cells
 GRID_SIZE = 50
 
