@@ -36,12 +36,12 @@ def visualize_path(grid, path=[]):
 
     # uncomment below if you have monitor plugged in to pi
     # Display the transposed grid
-    # visual_grid = np.transpose(grid)
-    # plt.figure(figsize=(8, 8))
-    # plt.title("Routing")
-    # plt.imshow(visual_grid, cmap='gray', origin='lower')
-    # plt.colorbar()
-    # plt.show()
+    visual_grid = np.transpose(grid)
+    plt.figure(figsize=(8, 8))
+    plt.title("Routing")
+    plt.imshow(visual_grid, cmap='gray', origin='lower')
+    plt.colorbar()
+    plt.show()
 
 
 def mark_path_on_grid(grid, path, path_value=3):
