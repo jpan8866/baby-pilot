@@ -1,5 +1,6 @@
-from path_finder import a_star_search, Node
+from path_finder import a_star_search_4dir, Node
 from advanced_mapping import scan_environment
+from utils import visualize_path
 
 grid = scan_environment()
 
@@ -7,15 +8,16 @@ grid = scan_environment()
 GRID_SIZE = 50
 
 # Define the start and goal positions
-start = Node(0, 0)
-goal = Node(GRID_SIZE - 1, GRID_SIZE - 1)
+start = Node(GRID_SIZE//2, 0)
+goal = Node(GRID_SIZE//2, GRID_SIZE-1)
 
 # Run A* search to find the path
-path = a_star_search(grid, start, goal)
+path = a_star_search_4dir(grid, start, goal)
+visualize_path(grid, path)
 
-if path:
-    print("Path found:")
-    for x, y in path:
-        print(f"({x}, {y})")
-else:
-    print("No path found.")
+# if path:
+#     print("Path found:")
+#     for x, y in path:
+#         print(f"({x}, {y})")
+# else:
+#     print("No path found.")

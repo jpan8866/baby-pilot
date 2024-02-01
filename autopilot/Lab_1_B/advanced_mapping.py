@@ -102,6 +102,7 @@ def draw_line(x0, y0, x1, y1):
 
 
 # ------------------- Uncomment below for testing purposes ------------------
+# below code moved to utils as well
 # Example usage
 # scan_environment()
 # np.set_printoptions(threshold=np.inf, linewidth=np.inf)

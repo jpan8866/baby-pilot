@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 def visualize_map(grid, scale=10):
     """
@@ -24,3 +26,19 @@ def visualize_map(grid, scale=10):
     cv2.imshow("Mapping visualization", color_map)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+
+def visualize_path(grid, path):
+    mark_path_on_grid(grid, path)
+    visual_grid = np.transpose(grid)
+    # Display the transposed grid
+    plt.figure(figsize=(8, 8))
+    plt.title("Routing")
+    plt.imshow(visual_grid, cmap='gray', origin='lower')
+    plt.colorbar()
+    plt.show()
+
+
+def mark_path_on_grid(grid, path, path_value=3):
+    for x, y in path:
+        grid[x, y] = path_value
