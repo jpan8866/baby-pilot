@@ -1,26 +1,22 @@
 import argparse
+import math
 from vehicle_control import drive, turn
 
 FEET_TO_DISTANCE_UNIT = 15
 TURNING_POWER = 1
 DRIVING_POWER = 10
 
+def calculate_turn_and_distance(x, y):
+    angle_radians = math.atan2(y, x)
+    angle_degrees = math.degrees(angle_radians)
+    distance = math.sqrt(x**2 + y**2) * FEET_TO_DISTANCE_UNIT
+    
+    return angle_degrees, distance
+
 def move_car(x: int, y: int):
-    # Convert feet to distance parameter
-    x_distance = abs(x) * FEET_TO_DISTANCE_UNIT
-    y_distance = abs(y) * FEET_TO_DISTANCE_UNIT
-
-    # Move horizontally
-    if x_distance > 0:
-        turn(angle=90, power=TURNING_POWER)
-    else:     
-        turn(angle=-90, power=TURNING_POWER)
-    drive(distance=x_distance, power=DRIVING_POWER)
-
-    # Move vertically
-    if y_distance < 0:
-        turn(angle=180, power=TURNING_POWER)
-    drive(distance=y_distance, power=DRIVING_POWER)
+    angle_degrees, distance = calculate_turn_and_distance(x, y)
+    turn(angle=angle_degrees, power=TURNING_POWER)
+    drive(distance=distance, power=DRIVING_POWER)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Drive a car to a specific (x, y) location.")
