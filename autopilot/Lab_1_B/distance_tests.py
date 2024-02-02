@@ -4,13 +4,14 @@ import picar_4wd as fc
 def test():
     speed = Speed(25)
     speed.start()
+    print(speed)
     fc.forward(100)
     x = 0
     for i in range(20):
         time.sleep(0.1)
-        speed = speed()
-        x += speed * 0.1
-        print("%smm/s" % speed)
+        s = speed()
+        x += s * 0.1
+        print("%smm/s" % s)
     print("%smm" % x)
     speed.deinit()
     fc.stop()
