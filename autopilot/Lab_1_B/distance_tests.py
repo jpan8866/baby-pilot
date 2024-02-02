@@ -11,10 +11,23 @@ def test():
         time.sleep(0.1)
         s = speed()
         x += s * 0.1
-        print("%smm/s" % s)
-    print("%smm" % x)
+        print("%scm/s" % s)
+    print("%scm" % x)
     speed.deinit()
     fc.stop()
 
+
+def drive(distance: int, power: int=10):
+    fc.start_speed_thread()
+    x = 0
+    fc.forward(power)
+    while x < distance:
+        time.sleep(0.1)
+        s = fc.speed_val()
+        x += s * 0.1
+        print("%scm" % x)
+    fc.stop()
+
+
 if __name__ == "__main__":
-    test()
+    drive(15.75)  # length of an iphone xs max for testing
