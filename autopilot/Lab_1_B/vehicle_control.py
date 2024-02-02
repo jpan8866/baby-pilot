@@ -28,11 +28,11 @@ def turn(angle: int, power: int = 10):
     '''
     fc.stop()
     time.sleep(0.1)
-    turn_left(2)
+    fc.turn_left(2)
     time.sleep(0.5)
-    turn_left(4)
+    fc.turn_left(4)
     time.sleep(0.5)
-    turn_left(6)
+    fc.turn_left(6)
     fc.stop()
 
 
