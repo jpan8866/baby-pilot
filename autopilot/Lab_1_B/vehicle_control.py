@@ -1,21 +1,6 @@
 from picar_4wd.speed import *
 import picar_4wd as fc
 
-def test():
-    speed = Speed(25)
-    speed.start()
-    print(speed)
-    fc.forward(10)
-    x = 0
-    for i in range(20):
-        time.sleep(0.1)
-        s = speed()
-        x += s * 0.1
-        print("%scm/s" % s)
-    print("%scm" % x)
-    speed.deinit()
-    fc.stop()
-
 
 def drive(distance: int, power: int = 10):
     '''
