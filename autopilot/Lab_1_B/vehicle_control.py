@@ -45,7 +45,6 @@ def turn(angle: int, power: int = 1):
         time.sleep(0.05)
         speed = s()
         a += 180/math.pi * 2 * speed * 0.05 / 17
-        print(a)
     fc.stop()
     s.deinit()
 
