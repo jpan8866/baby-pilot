@@ -70,7 +70,7 @@ def turn_right(angle: int, power: int = 1):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Turn given a direction, angle and power")
-    parser.add_argument("dir", type=int, help="Direction (L/R)")
+    parser.add_argument("dir", type=str, help="Direction (L/R)")
     parser.add_argument("angle", type=int, help="Angle")
     parser.add_argument("pow", type=int, help="Power")
     

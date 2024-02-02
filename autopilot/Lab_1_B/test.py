@@ -1,6 +1,6 @@
 import argparse
-from vehicle_control import drive, turn, turn_right
-from advanced_mapping_brent import route_once
+from vehicle_control import turn, turn_right
+from advanced_mapping_brent import route
 import picar_4wd as fc
 
 FEET_TO_DISTANCE_UNIT = 30
@@ -17,14 +17,14 @@ def move_car(x: int, y: int):
     if(y < 0):
         turn(TURN_AROUND, TURNING_POWER) 
     for _ in range(y):
-        route_once()
+        route()
     
     if(x > 0):
         turn_right(SHARP_TURN, TURNING_POWER) 
     if(x < 0):
         turn(SHARP_TURN, TURNING_POWER)         
     for _ in range(x):
-        route_once()
+        route()
     
 
 if __name__ == "__main__":

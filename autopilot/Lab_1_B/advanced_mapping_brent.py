@@ -4,6 +4,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import picar_4wd as fc
+from advanced_mapping import scan_environment as scan_env
 
 # Constants
 GRID_SIZE = 50 # creating a 50x50 2d grid
@@ -377,5 +378,26 @@ def mock_route_once():
     # Follow the path
     follow_path(path)
 
+
+def route():
+    
+    scanned_grid = scan_env()
+
+    # Define the start and goal
+    
+    start = CAR_POS
+    goal = (25, 49)
+
+    # Run A* algorithm
+    path = astar(scanned_grid, start, goal) # TODO factor in a boundary buffer for obstacles
+    print("Path: ", path)
+    print("Path length: ", len(path))
+
+
+    # Visualize the grid
+    visualize_grid(scanned_grid, path, start, goal)
+
+    # Follow the path
+    follow_path(path)
 
 mock_route_once()
