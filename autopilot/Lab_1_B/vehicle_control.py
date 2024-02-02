@@ -14,13 +14,13 @@ def drive(distance: int, power: int = 10):
         time.sleep(0.05)
         s = fc.speed_val()
         x += s * 0.05
-        print("%scm" % x)
+        # print("%scm" % x)
     fc.stop()
     fc.left_rear_speed.deinit()
     fc.right_rear_speed.deinit()
 
 
-def turn(angle: int, power: int = 10):
+def turn_diagonal(angle: int, power: int = 10):
     '''
     stop car first before initiating turn
     experiment with gradually scaling up acceleration
@@ -35,8 +35,20 @@ def turn(angle: int, power: int = 10):
     fc.turn_left(6)
     fc.stop()
 
-
+def turn(angle: int, power: int = 10):
+    fc.stop()
+    s = Speed(25)
+    s.start()
+    a = 0
+    fc.turn_left(2)
+    while a < angle:
+        time.sleep(0.05)
+        speed = s()
+        a += 180/math.pi * 2 * speed * 0.05 / 8
+        print(a)
+    fc.stop()
+    s.deinit()
 
 if __name__ == "__main__":
     # drive(15.75)  # length of an iphone xs max for testing
-    turn(90)
+    turn(45)
