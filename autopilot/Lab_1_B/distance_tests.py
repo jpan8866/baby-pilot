@@ -26,9 +26,9 @@ def drive(distance: int, power: int = 10):
         s = fc.speed_val()
         x += s * 0.05
         print("%scm" % x)
+    fc.stop()
     fc.left_rear_speed.deinit()
     fc.right_rear_speed.deinit()
-    fc.stop()
 
 
 if __name__ == "__main__":
