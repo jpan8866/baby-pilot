@@ -40,15 +40,16 @@ def turn(angle: int, power: int = 10):
     s = Speed(25)
     s.start()
     a = 0
-    fc.turn_left(2)
-    while a < angle*1.35:
-        time.sleep(0.05)
-        speed = s()
-        a += 180/math.pi * 2 * speed * 0.05 / 17
-        print(a)
+    for power in range(0, 6, 2):
+        fc.turn_left(power)
+        while a < angle*1.35:
+            time.sleep(0.05)
+            speed = s()
+            a += 180/math.pi * 2 * speed * 0.05 / 17
+            print(a)
     fc.stop()
     s.deinit()
 
 if __name__ == "__main__":
     # drive(15.75)  # length of an iphone xs max for testing
-    turn(45)
+    turn(90)
