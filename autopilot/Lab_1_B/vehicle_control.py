@@ -35,12 +35,12 @@ def turn_diagonal(angle: int, power: int = 10):
     fc.turn_left(6)
     fc.stop()
 
-def turn(angle: int, power: int = 10):
+def turn(angle: int, power: int = 1):
     fc.stop()
     s = Speed(25)
     s.start()
     a = 0
-    fc.turn_left(2)
+    fc.turn_left(power)
     while a < angle*1.35:
         time.sleep(0.05)
         speed = s()
