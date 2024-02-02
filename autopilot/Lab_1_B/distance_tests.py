@@ -5,7 +5,7 @@ def test():
     speed = Speed(25)
     speed.start()
     print(speed)
-    fc.forward(100)
+    fc.forward(10)
     x = 0
     for i in range(20):
         time.sleep(0.1)
