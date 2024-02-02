@@ -41,9 +41,11 @@ def turn(angle: int, power: int = 1):
     s.start()
     a = 0
     fc.turn_left(power)
-    while a < angle*1.35:
+    # scale up angle 40% to account for hops and grip loss
+    while a < angle*1.4:
         time.sleep(0.05)
         speed = s()
+        # Degrees turned = w * t = v/r * t = 2v/L * t. Multiply by 180/pi to get degrees
         a += 180/math.pi * 2 * speed * 0.05 / 17
     fc.stop()
     s.deinit()
