@@ -38,5 +38,5 @@ def turn(angle: int, power: int = 10):
 
 
 if __name__ == "__main__":
-    drive(15.75)  # length of an iphone xs max for testing
+    # drive(15.75)  # length of an iphone xs max for testing
     turn(90)
