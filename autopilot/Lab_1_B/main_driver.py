@@ -2,8 +2,8 @@ import argparse
 import math
 from vehicle_control import drive, turn
 
-FEET_TO_DISTANCE_UNIT = 15
-TURNING_POWER = 1
+FEET_TO_DISTANCE_UNIT = 18
+TURNING_POWER = 5
 DRIVING_POWER = 10
 
 def calculate_turn_and_distance(x, y):
