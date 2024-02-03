@@ -98,3 +98,7 @@ def route():
 
     # Follow the path
     follow_path(path)
+
+
+if __name__ == '__main__':
+    route()
