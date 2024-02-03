@@ -4,7 +4,7 @@ from utils import visualize_path
 import numpy as np
 
 grid = scan_environment()
-np.savetxt('~/grid.txt', grid, fmt='%d') # scp file to laptop to view
+np.savetxt('/mnt/data/grid.txt', grid, fmt='%d') # scp file to laptop to view
 # Create a 50x50 grid where 0 represents empty cells
 GRID_SIZE = 50
 
