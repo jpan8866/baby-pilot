@@ -4,6 +4,7 @@ import time
 import numpy as np
 import matplotlib.pyplot as plt
 import picar_4wd as fc
+import argparse
 from advanced_mapping import scan_environment as scan_env
 
 # Constants
@@ -15,6 +16,22 @@ MAX_DISTANCE = 0.8 * GRID_SIZE  # limit distance to filter out noise
 
 # Initialize the grid
 grid: np.ndarray = np.zeros((GRID_SIZE, GRID_SIZE)) # the grid is zeroed by default and the ultrasonic sensor indicates where the 1's should be
+
+# parge 2 numbers from the command line
+parser = argparse.ArgumentParser()
+parser.add_argument('-d', '--destination', nargs=2, metavar=('delta_x_cm', 'delta_y_cm'), type=int, help="x and y distances in cm to the destination, relative to the car")
+args = parser.parse_args()
+goal_delta_x, goal_delta_y = args.destination
+
+
+####################### Sensing and Mapping Functions ############################
+def destination_to_coordinates(delta_x: int, delta_y: int) -> tuple[int]:
+    """
+    Convert a relative destination in cm to coordinates on the grid.
+    Coordinates are relative to the car's position.
+    """
+    # hope they don't give negative values for delta_y bc we're not moving backwards lol
+    return (CAR_POS[0] + delta_x, CAR_POS[1] + abs(delta_y)) 
 
 def polar_to_cartesian(angle: int, distance: int) -> tuple[int]:
 # def polar_to_cartesian(angle, distance):
@@ -28,7 +45,6 @@ def polar_to_cartesian(angle: int, distance: int) -> tuple[int]:
     x = -distance * np.sin(radian)
     y = distance * np.cos(radian)
     return int(x), int(y)
-
 
 def update_grid(angle: int, distance: int, last_angle: int or None, last_distance: int or None) -> None:
     """
@@ -51,7 +67,6 @@ def update_grid(angle: int, distance: int, last_angle: int or None, last_distanc
     elif 0 <= x1 < GRID_SIZE and 0 <= y1 < GRID_SIZE:
         grid[x1, y1] = 1
 
-
 def scan_environment() -> None:
     """
     Simulate scanning the environment and updating the grid.
@@ -68,7 +83,6 @@ def scan_environment() -> None:
 
         last_angle = angle
         last_distance = distance
-
 
 def draw_line(x0: int, y0: int, x1: int, y1: int) -> None:
     """
@@ -96,7 +110,7 @@ def draw_line(x0: int, y0: int, x1: int, y1: int) -> None:
             err += dx
             y0 += sy
 
-
+####################### Routing Functions ############################
 class Node:
     # A node class for A* Pathfinding
     def __init__(self, position, obstacle):
@@ -192,7 +206,8 @@ def astar(grid, start, goal) -> list[tuple[int]] or None:
 
     return None  # No path found
 
-def follow_path(path, sleep_factor=0.10, power=20):
+####################### Control Functions ############################
+def follow_path(path, sleep_factor=0.05, power=10):
     # Follow the path using the car
     print("following path....")
     i = 0
@@ -218,10 +233,10 @@ def follow_path(path, sleep_factor=0.10, power=20):
             # Turn the car to the calculated angle if needed
             if angle > 0:
                 fc.turn_right(power)  # Adjust the power as needed
-                time.sleep(abs(angle) * 0.01 * 1.5)
+                time.sleep(abs(angle) * 0.01 * 0.8)
             elif angle < 0:
                 fc.turn_left(power)  # Adjust the power as needed
-                time.sleep(abs(angle) * 0.01 * 1.5)
+                time.sleep(abs(angle) * 0.01 * 0.8)
             print("turned.... if needed")
             print("moving forward...")
             
@@ -265,7 +280,7 @@ def calculate_angle(current_point, next_point) -> float:
 
     return angle_degrees
     
-
+####################### Visualization Helper ############################
 def visualize_grid(grid, path, start, goal):
     plt.figure(figsize=(8, 8))
     plt.title("Grid Visualization")
@@ -315,6 +330,7 @@ def visualize_grid(grid, path, start, goal):
 # # plt.colorbar()
 # plt.show()
 
+#######################################################
 def route_once():
     scan_environment()
     np.set_printoptions(threshold=np.inf, linewidth=np.inf)
@@ -342,8 +358,7 @@ def route_once():
 # route_once()
 
 
-#######################################################
-###### TESTING #########
+####################### Testing ############################
 def generate_mock_grid(rows, cols, obstacles=[]):
     # Initialize grid with all zeros (no obstacles)
     grid = np.zeros((rows, cols), dtype=int)
@@ -357,16 +372,19 @@ def generate_mock_grid(rows, cols, obstacles=[]):
 
 def mock_route_once():
     # Place obstacles at specific positions
-    obstacle_positions = [(22, 10), (23, 10), (24, 10), (25, 10), (26, 10), (27, 10), (28, 10), (29, 10), (30, 10), (31, 10), (32, 10), (33, 10), (34, 10), (35, 10), (36, 10), (37, 10), (38, 10), (39, 10), (40, 10), (41, 10), (42, 10), (43, 10), (44, 10), (45, 10), (46, 10), (47, 10), (48, 10), (49, 10), (15, 20), (16, 20), (17, 20), (18, 20), (19, 20), (20, 20), (21, 20), (22, 20), (23, 20), (24, 20), (25, 20), (26, 20), (27, 20), (28, 20), (29, 20), (30, 20)]
+    # obstacle_positions = [(22, 10), (23, 10), (24, 10), (25, 10), (26, 10), (27, 10), (28, 10), (29, 10), (30, 10), (31, 10), (32, 10), (33, 10), (34, 10), (35, 10), (36, 10), (37, 10), (38, 10), (39, 10), (40, 10), (41, 10), (42, 10), (43, 10), (44, 10), (45, 10), (46, 10), (47, 10), (48, 10), (49, 10), (15, 20), (16, 20), (17, 20), (18, 20), (19, 20), (20, 20), (21, 20), (22, 20), (23, 20), (24, 20), (25, 20), (26, 20), (27, 20), (28, 20), (29, 20), (30, 20)]
+    obstacle_positions = []
 
     # Generate mock grid
     mock_grid = generate_mock_grid(50, 50, obstacles=obstacle_positions)
+    print("Mock grid: ", mock_grid)
 
     # Define the start and goal
     start = CAR_POS
-    goal = (25, 49)
+    goal = destination_to_coordinates(goal_delta_x, goal_delta_y) # 10cm to the right and 25cm ahead
 
     # Run A* algorithm
+    # TODO return error if goal is on edge of grid and thus unreachable
     path = astar(mock_grid, start, goal) # TODO factor in a boundary buffer for obstacles
     print("Path: ", path)
     print("Path length: ", len(path))
