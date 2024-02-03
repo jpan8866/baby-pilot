@@ -36,7 +36,7 @@ def update_grid(angle, distance, last_angle, last_distance):
 
     # todo: revisit inference condition; It should not be just on angle increment
     # todo: It should also use a distance standard d, and if distance between two points < d -> do inference
-    if last_angle is not None and abs(last_angle - angle) == ANGLE_INCREMENT:
+    if False and last_angle is not None and abs(last_angle - angle) == ANGLE_INCREMENT:
         # Interpolate between the last point and the current point if the delta is 1 angle increment
         x0, y0 = polar_to_cartesian(last_angle, last_distance)
         x0 += CAR_POS[0]
