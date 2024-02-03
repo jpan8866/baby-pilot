@@ -1,6 +1,5 @@
 from advanced_mapping import scan_environment
-from path_finder import a_star_search_4dir as astar
-import picar_4wd as fc
+import path_finder
 import numpy as np
 import settings
 import math
@@ -84,12 +83,11 @@ def route():
     np.set_printoptions(threshold=np.inf, linewidth=np.inf)
 
     # Define the start and goal
-
-    start = CAR_POS
-    goal = (settings.GRID_SIZE//2, settings.GRID_SIZE)
+    start = path_finder.Node(settings.GRID_SIZE // 2, 0)
+    goal = path_finder.Node(settings.GRID_SIZE // 2, settings.GRID_SIZE - 1)
 
     # Run A* algorithm
-    path = astar(scanned_grid, start, goal)
+    path = path_finder.a_star_search_4dir(scanned_grid, start, goal)
     print("Path: ", path)
     print("Path length: ", len(path))
 
