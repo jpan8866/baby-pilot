@@ -89,7 +89,7 @@ def route():
     goal = (settings.GRID_SIZE//2, settings.GRID_SIZE)
 
     # Run A* algorithm
-    path = astar(scanned_grid, start, goal)  # TODO factor in a boundary buffer for obstacles
+    path = astar(scanned_grid, start, goal)
     print("Path: ", path)
     print("Path length: ", len(path))
 
