@@ -4,6 +4,7 @@ import picar_4wd as fc
 import numpy as np
 import settings
 import math
+import time
 
 CAR_POS = (settings.GRID_SIZE//2, 0)
 
@@ -85,7 +86,7 @@ def route():
     # Define the start and goal
 
     start = CAR_POS
-    goal = (25, 49)
+    goal = (settings.GRID_SIZE//2, settings.GRID_SIZE)
 
     # Run A* algorithm
     path = astar(scanned_grid, start, goal)  # TODO factor in a boundary buffer for obstacles
