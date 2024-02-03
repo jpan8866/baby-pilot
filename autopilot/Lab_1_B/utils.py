@@ -31,7 +31,7 @@ def visualize_map(grid, scale=10):
 
 def visualize_path(grid):
     np.set_printoptions(threshold=np.inf, linewidth=np.inf)
-    print(np.transpose(grid))
+    # print(np.transpose(grid))
 
     # uncomment below if you have monitor plugged in to pi
     # Display the transposed grid

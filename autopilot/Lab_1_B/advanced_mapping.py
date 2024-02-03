@@ -44,6 +44,8 @@ def update_grid(angle, distance, last_angle, last_distance):
 
         draw_line(x0, y0, x1, y1)
     elif 0 <= x1 < GRID_SIZE and 0 <= y1 < GRID_SIZE:
+        print("object at: ")
+        print(x1, y1)
         add_point(x1, y1)
 
 
