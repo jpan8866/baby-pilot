@@ -400,6 +400,7 @@ def mock_route_once():
 def route():
     
     scanned_grid = scan_env()
+    np.set_printoptions(threshold=np.inf, linewidth=np.inf)
 
     # Define the start and goal
     
@@ -413,9 +414,7 @@ def route():
 
 
     # Visualize the grid
-    visualize_grid(scanned_grid, path, start, goal)
+    # visualize_grid(scanned_grid, path, start, goal)
 
     # Follow the path
     follow_path(path)
-
-mock_route_once()
