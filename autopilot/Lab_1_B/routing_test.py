@@ -17,4 +17,4 @@ if path:
 
 np.savetxt('./grid.txt', grid, fmt='%d')  # scp file to laptop to view
 
-visualize_path(grid, path)
+visualize_path(grid)
