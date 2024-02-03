@@ -1,4 +1,5 @@
 from advanced_mapping import scan_environment
+import picar_4wd as fc
 import path_finder
 import numpy as np
 import settings
