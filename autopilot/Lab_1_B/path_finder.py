@@ -1,7 +1,9 @@
 import heapq
 from itertools import count
-GRID_SIZE = 50
-# todo: gather all constants into a settings file
+import settings
+
+GRID_SIZE = settings.GRID_SIZE
+
 
 class Node:
     def __init__(self, x, y, g=0, h=0, f=0, parent=None):

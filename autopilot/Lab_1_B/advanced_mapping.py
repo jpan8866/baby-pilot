@@ -2,13 +2,14 @@ import numpy as np
 # from utils import visualize_map
 import matplotlib.pyplot as plt
 import picar_4wd as fc
+import settings
 
 # Constants
-GRID_SIZE = 50
+GRID_SIZE = settings.GRID_SIZE
 CAR_POS = (GRID_SIZE//2, 0)
-ANGLE_INCREMENT = 10
+ANGLE_INCREMENT = settings.ANGLE_INCREMENT
 MAX_DISTANCE = 0.8 * GRID_SIZE  # limit distance to filter out noise
-PADDING_SIZE = 2  # number of cells to pad around a point in grid
+PADDING_SIZE = settings.PADDING_SIZE  # number of cells to pad around a point in grid
 # Initialize the grid
 grid = np.zeros((GRID_SIZE, GRID_SIZE))
 
@@ -58,9 +59,9 @@ def add_point(x, y):
                 grid[new_x, new_y] = 1
 
 
-def scan_environment():
+def scan_environment() -> None:
     """
-    Simulate scanning the environment and updating the grid.
+    This function calls update_grid to set grid cell values to 1.
     """
     last_angle = None
     last_distance = None
