@@ -29,9 +29,7 @@ def visualize_map(grid, scale=10):
     cv2.destroyAllWindows()
 
 
-def visualize_path(grid, path=[]):
-    if path:
-        mark_path_on_grid(grid, path)
+def visualize_path(grid):
     np.set_printoptions(threshold=np.inf, linewidth=np.inf)
     print(np.transpose(grid))
 
