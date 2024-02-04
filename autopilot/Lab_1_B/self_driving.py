@@ -125,7 +125,6 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
 def follow_path(path, sleep_factor=0.05, power=10):
     # Follow the path using the car
     print("following path....")
-    fc.start_speed_thread()
     i = 0
     prev_angle = 0
     angle = 0
@@ -265,6 +264,7 @@ def route_continuously(goal: tuple):
     takes the approach of making a path from destination to start, and subtracting
     the the distance needed until it's within the range of the local grid.
     """
+    fc.start_speed_thread()
     i = 0
     start_node = path_finder.Node(settings.GRID_SIZE // 2, 0)
     while True:
