@@ -127,11 +127,11 @@ def follow_path(path, sleep_factor=0.05, power=10):
     prev_point = (0, 0)
     try:
         while i < len(path) - 1:
-            if stop_event.is_set():
-                print("Traffic detected. Stopping car.")
-                fc.stop()
-                stop_event.wait()
-                print("Traffic cleared. Resuming drive.")
+            # if stop_event.is_set():
+            #     print("Traffic detected. Stopping car.")
+            #     fc.stop()
+            #     stop_event.wait()
+            #     print("Traffic cleared. Resuming drive.")
 
             current_point = path[i]
             print("current point: ", current_point)
@@ -191,6 +191,7 @@ def drive(distance: int, power: int = 10) -> int:
         if stop_event.is_set():
             fc.stop()
             stop_event.wait()
+            print("Traffic cleared, resume drive")
         time.sleep(0.05)
         s = fc.speed_val()
         x += s * 0.05
