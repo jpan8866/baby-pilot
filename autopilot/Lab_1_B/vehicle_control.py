@@ -3,10 +3,11 @@ import picar_4wd as fc
 import argparse
 
 
-def drive(distance: int, power: int = 10):
+def drive(distance: int, power: int = 10) -> int:
     '''
     Calculates the speed using the Photo Interruptor
     Given a distance, we drive until distance is met.
+    returns traveled distance
     '''
     fc.start_speed_thread()
     x = 0
@@ -19,6 +20,7 @@ def drive(distance: int, power: int = 10):
     fc.stop()
     fc.left_rear_speed.deinit()
     fc.right_rear_speed.deinit()
+    return x
 
 
 # def turn_diagonal(angle: int):
