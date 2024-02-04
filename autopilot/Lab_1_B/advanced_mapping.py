@@ -43,7 +43,7 @@ def update_grid(grid, angle, distance, last_angle, last_distance):
             x0 += CAR_POS[0]
             y0 += CAR_POS[1]
             if 0 <= x0 < GRID_SIZE and 0 <= y0 < GRID_SIZE and euclidean_distance(x0, y0, x1, y1) <= settings.MIN_DISTANCE_TO_INTERPOLATE:
-                draw_line(x0, y0, x1, y1)
+                draw_line(grid, x0, y0, x1, y1)
 
 def add_point(grid, x, y):
     """
@@ -79,7 +79,7 @@ def scan_environment() -> [[]]:
     return grid
 
 
-def draw_line(x0, y0, x1, y1):
+def draw_line(grid, x0, y0, x1, y1):
     """
     Draw a line from (x0, y0) to (x1, y1) using Bresenham's line algorithm.
     Use Bresenham's algorithm for efficiency as it only involves integer arithmetic
@@ -92,7 +92,7 @@ def draw_line(x0, y0, x1, y1):
 
     while True:
         if 0 <= x0 < GRID_SIZE and 0 <= y0 < GRID_SIZE:
-            add_point(x0, y0)  # Set the point on the grid
+            add_point(grid, x0, y0)  # Set the point on the grid
 
         if x0 == x1 and y0 == y1:
             break
