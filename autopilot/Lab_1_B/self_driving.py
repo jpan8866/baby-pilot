@@ -20,6 +20,7 @@ from tflite_support.task import vision
 CAR_POS = (settings.GRID_SIZE//2, 0)
 
 stop_event = threading.Event()
+traffic_cleared = threading.Event()
 destination_reached = threading.Event()
 
 
@@ -89,6 +90,7 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
                         stopped = True
                         print("clearing stop event")
                         stop_event.clear()
+                        traffic_cleared.set()
                     elif category_name in ["person"] and not stop_event.is_set():
                         print(category_name, " detected. Stopping car.")
                         stop_event.set()
@@ -191,7 +193,7 @@ def drive(distance: int, power: int = 10) -> int:
     while x < distance*0.95:
         if stop_event.is_set():
             fc.stop()
-            stop_event.wait()
+            traffic_cleared.wait()
             print("Traffic cleared, resume drive")
         time.sleep(0.05)
         s = fc.speed_val()
