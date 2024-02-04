@@ -72,12 +72,6 @@ def scan_environment() -> None:
         # Ignore distances that are beyond our max range. This avoids unnecessary maneuvers based on distant objects
         for _ in range(2):
             distance = fc.get_distance_at(angle)
-        # x, y = polar_to_cartesian(angle, distance)
-        # print("distance, angle: ")
-        # print(distance, angle)
-        # print("coordinates: ", x, y)
-        # if not (0 <= x <= MAX_DISTANCE) or not (0 <= y <= MAX_DISTANCE):
-        #     continue
         update_grid(angle, distance, last_angle, last_distance)
 
         last_angle = angle
