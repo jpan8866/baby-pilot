@@ -9,7 +9,6 @@ def drive(distance: int, power: int = 10) -> int:
     Given a distance, we drive until distance is met.
     returns traveled distance
     '''
-    fc.start_speed_thread()
     x = 0
     fc.forward(power)
     while x < distance*0.95:

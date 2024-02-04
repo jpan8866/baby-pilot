@@ -33,6 +33,7 @@ def calculate_angle(current_point, prev_point) -> float:
 def follow_path(path, sleep_factor=0.05, power=10):
     # Follow the path using the car
     print("following path....")
+    fc.start_speed_thread()
     i = 0
     prev_angle = 0
     angle = 0
@@ -51,6 +52,7 @@ def follow_path(path, sleep_factor=0.05, power=10):
 
             # Count consecutive points in the same direction
             consecutive_points = 0
+            print(calculate_angle(current_point, path[i + 1]))
             while i < len(path) - 2 and angle == calculate_angle(current_point, path[i + 1]):
                 i += 1
                 # next_point = path[i + 1]
@@ -68,6 +70,7 @@ def follow_path(path, sleep_factor=0.05, power=10):
                 print("Turned left by ", abs(angle))
             fc.stop()
             prev_angle = angle
+            prev_point = current_point
             print("moving forward...")
 
             drive(consecutive_points)
