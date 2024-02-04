@@ -266,6 +266,7 @@ def route_continuously(goal: tuple):
     the the distance needed until it's within the range of the local grid.
     """
     i = 0
+    start_node = path_finder.Node(settings.GRID_SIZE // 2, 0)
     while True:
         i += 1
         grid = scan_environment()
@@ -273,7 +274,7 @@ def route_continuously(goal: tuple):
         if 0 <= goal[0] <= settings.GRID_SIZE and 0 <= goal[1] < settings.GRID_SIZE:
             print("Goal within current map")
             goal_node = path_finder.Node(goal[0], goal[1])
-            path = path_finder.a_star_search_4dir(grid, CAR_POS, goal_node)
+            path = path_finder.a_star_search_4dir(grid, start_node, goal_node)
             # visualize map
             if path:
                 mark_path_on_grid(grid, path)
@@ -287,7 +288,7 @@ def route_continuously(goal: tuple):
 
             print("local goal: ", local_goal)
             local_goal_node = path_finder.Node(local_goal[0], local_goal[1])
-            local_path = path_finder.a_star_search_4dir(grid, CAR_POS, local_goal_node)
+            local_path = path_finder.a_star_search_4dir(grid, start_node, local_goal_node)
             # visualize map
             if local_path:
                 mark_path_on_grid(grid, local_path)
