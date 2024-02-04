@@ -72,6 +72,8 @@ def scan_environment() -> None:
         # Ignore distances that are beyond our max range. This avoids unnecessary maneuvers based on distant objects
         for _ in range(3):
             distance = fc.get_distance_at(angle)
+            print("distance, angle: ")
+            print(distance, angle)
         if not 0 <= distance <= MAX_DISTANCE:
             continue
         update_grid(angle, distance, last_angle, last_distance)
