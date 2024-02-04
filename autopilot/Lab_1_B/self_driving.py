@@ -54,7 +54,7 @@ def follow_path(path, sleep_factor=0.05, power=10):
                 print("Next heading: ", angle)
 
             # Count consecutive points in the same direction
-            consecutive_points = 0
+            consecutive_points = 1
             print(calculate_angle(path[i + 1], current_point))
             while i < len(path) - 2 and angle == calculate_angle(path[i + 1], current_point):
                 i += 1
@@ -63,14 +63,15 @@ def follow_path(path, sleep_factor=0.05, power=10):
             print("Distance to travel (cm): ", consecutive_points)
 
             # Turn the car to the calculated angle if needed
-            if angle - prev_angle > 0:
+            turn_angle = angle - prev_angle
+            if turn_angle > 0:
                 fc.turn_right(power)  # Adjust the power as needed
-                time.sleep(abs(angle) * 0.01 * 0.8)
-                print("Turned right by ", abs(angle))
-            elif angle - prev_angle < 0:
+                time.sleep(abs(turn_angle) * 0.01 * 0.8)
+                print("Turned right by ", abs(turn_angle))
+            elif turn_angle < 0:
                 fc.turn_left(power)  # Adjust the power as needed
-                time.sleep(abs(angle) * 0.01 * 0.8)
-                print("Turned left by ", abs(angle))
+                time.sleep(abs(turn_angle) * 0.01 * 0.8)
+                print("Turned left by ", abs(turn_angle))
             fc.stop()
             prev_angle = angle
             print("moving forward...")
