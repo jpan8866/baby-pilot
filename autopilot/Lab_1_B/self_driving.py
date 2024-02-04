@@ -1,5 +1,4 @@
 from advanced_mapping import scan_environment
-from vehicle_control import drive
 from utils import mark_path_on_grid
 
 import picar_4wd as fc
@@ -83,12 +82,22 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
                 probability = round(category.score, 2)
                 if probability > 0.50:
                     print("Object: " + category_name, "probability: " + str(probability))
-                    if category_name in ["person", "stop sign"] and not stop_event.is_set():
+                    if category_name in ["stop sign"] and not stop_event.is_set():
                         print(category_name, " detected. Stopping car.")
                         stop_event.set()
+                        time.sleep(3)
+                        stop_event.clear()
+                    elif category_name in ["person"] and not stop_event.is_set():
+                        print(category_name, " detected. Stopping car.")
+                        stop_event.set()
+                        time.sleep(3)
+                        stop_event.clear()
                     elif stop_event.is_set():
                         # traffic cleared
                         stop_event.clear()
+
+            def is_traffic_clear():
+                pass
 
         # Calculate the FPS
         end_time = time.time()
@@ -169,6 +178,28 @@ def follow_path(path, sleep_factor=0.05, power=10):
 
     finally:
         fc.stop()
+
+
+def drive(distance: int, power: int = 10) -> int:
+    '''
+    Calculates the speed using the Photo Interruptor
+    Given a distance, we drive until distance is met.
+    returns traveled distance
+    '''
+    x = 0
+    fc.forward(power)
+    while x < distance*0.95:
+        if stop_event.is_set():
+            fc.stop()
+            stop_event.wait()
+        time.sleep(0.05)
+        s = fc.speed_val()
+        x += s * 0.05
+        # print("%scm" % x)
+    fc.stop()
+    fc.left_rear_speed.deinit()
+    fc.right_rear_speed.deinit()
+    return x
 
 
 def calculate_angle(current_point, prev_point) -> float:
