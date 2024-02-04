@@ -158,11 +158,11 @@ def follow_path(path, sleep_factor=0.05, power=10):
             turn_angle = angle - prev_angle
             if turn_angle > 0:
                 fc.turn_right(power)  # Adjust the power as needed
-                time.sleep(abs(turn_angle) * 0.01 * 0.8)
+                time.sleep(abs(turn_angle) * 0.02 * 0.8)
                 print("Turned right by ", abs(turn_angle))
             elif turn_angle < 0:
                 fc.turn_left(power)  # Adjust the power as needed
-                time.sleep(abs(turn_angle) * 0.01 * 0.8)
+                time.sleep(abs(turn_angle) * 0.02 * 0.8)
                 print("Turned left by ", abs(turn_angle))
             fc.stop()
             prev_angle = angle
