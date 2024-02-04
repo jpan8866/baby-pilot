@@ -50,7 +50,9 @@ def a_star_search_4dir(grid, start, goal):
     counter = count()  # use as secondary sorting criterion for primary queue for tie breaking
     heapq.heappush(open_set, (start.f, next(counter), start))
     closed_set = set()
-
+    if grid[goal.x][goal.y] == 1:
+        print("Goal point is an obstacle. Unable to reach it.")
+        return None
     while open_set:
         current_f, _, current_node = heapq.heappop(open_set)
         closed_set.add((current_node.x, current_node.y))
