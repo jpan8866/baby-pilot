@@ -16,3 +16,4 @@ sudo apt-get -y install libprotobuf-dev libgoogle-glog-dev libgflags-dev
 sudo apt-get -y install protobuf-compiler
 pip3 install opencv-contrib-python
 python -m pip install --upgrade tflite-support==0.4.3
+pip install matplotlib
