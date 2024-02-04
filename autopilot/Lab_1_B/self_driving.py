@@ -98,15 +98,6 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
                         print("Clearing stop event")
                         stop_event.clear()
 
-        # Clear the stop event if no stop sign has been detected for a while
-        if stop_sign_detected and time.time() - last_stop_sign_detection_time > 3:
-            print("Stop sign no longer detected. Resuming car.")
-            stop_sign_detected = False
-            stop_event.clear()
-
-            def is_traffic_clear():
-                pass
-
         # Calculate the FPS
         end_time = time.time()
         elapsed_time = end_time - start_time
