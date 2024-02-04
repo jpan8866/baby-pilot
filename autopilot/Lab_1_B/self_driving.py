@@ -100,7 +100,7 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
             start_time = time.time()
 
         # Print the FPS
-        print("fps: " + str(fps))
+        # print("fps: " + str(fps))
 
         # Stop the program if the ESC key is pressed.
         if cv2.waitKey(1) == 27:
