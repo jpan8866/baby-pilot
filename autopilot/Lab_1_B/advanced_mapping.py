@@ -70,7 +70,9 @@ def scan_environment() -> None:
     #todo: read from last angle to avoid always turning to -90 first
     for angle in range(-90, 91, ANGLE_INCREMENT):
         # Ignore distances that are beyond our max range. This avoids unnecessary maneuvers based on distant objects
-        if not 0 <= (distance := fc.get_distance_at(angle)) <= MAX_DISTANCE:
+        for _ in range(3):
+            distance = fc.get_distance_at(angle)
+        if not 0 <= distance <= MAX_DISTANCE:
             continue
         update_grid(angle, distance, last_angle, last_distance)
 
