@@ -11,7 +11,6 @@ ANGLE_INCREMENT = settings.ANGLE_INCREMENT
 MAX_DISTANCE = 1 * GRID_SIZE  # limit distance to filter out noise
 PADDING_SIZE = settings.PADDING_SIZE  # number of cells to pad around a point in grid
 # Initialize the grid
-grid = np.zeros((GRID_SIZE, GRID_SIZE))
 
 
 def polar_to_cartesian(angle, distance):
@@ -30,7 +29,7 @@ def euclidean_distance(x1, y1, x2, y2):
     return np.sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
 
-def update_grid(angle, distance, last_angle, last_distance):
+def update_grid(grid, angle, distance, last_angle, last_distance):
     """
     Update the grid based on the sensor reading.
     """
@@ -38,7 +37,7 @@ def update_grid(angle, distance, last_angle, last_distance):
     x1 += CAR_POS[0]
     y1 += CAR_POS[1]
     if 0 <= x1 < GRID_SIZE and 0 <= y1 < GRID_SIZE:
-        add_point(x1, y1)
+        add_point(grid, x1, y1)
         if last_angle is not None:
             x0, y0 = polar_to_cartesian(last_angle, last_distance)
             x0 += CAR_POS[0]
@@ -46,7 +45,7 @@ def update_grid(angle, distance, last_angle, last_distance):
             if 0 <= x0 < GRID_SIZE and 0 <= y0 < GRID_SIZE and euclidean_distance(x0, y0, x1, y1) <= settings.MIN_DISTANCE_TO_INTERPOLATE:
                 draw_line(x0, y0, x1, y1)
 
-def add_point(x, y):
+def add_point(grid, x, y):
     """
     Add padding of number of cells equal to padding_size in each direction around a given point (x, y) in the grid.
     """
@@ -64,6 +63,8 @@ def scan_environment() -> [[]]:
     """
     last_angle = None
     last_distance = None
+    grid = np.zeros((GRID_SIZE, GRID_SIZE))
+
     #todo: read from last angle to avoid always turning to -90 first
     for angle in range(-90, 91, ANGLE_INCREMENT):
         # Ignore distances that are beyond our max range. This avoids unnecessary maneuvers based on distant objects
