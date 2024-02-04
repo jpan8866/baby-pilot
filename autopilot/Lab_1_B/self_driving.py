@@ -189,7 +189,7 @@ def drive(distance: int, power: int = 10) -> int:
     '''
     x = 0
     fc.forward(power)
-    while x < distance*0.40:
+    while x < distance*0.30:
         if stop_event.is_set():
             fc.stop()
             traffic_cleared.wait()
