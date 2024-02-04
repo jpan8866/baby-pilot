@@ -164,6 +164,7 @@ def follow_path(path, sleep_factor=0.05, power=10):
 
             i += 1
 
+        destination_reached.set()
         print("Destination reached. Final coordinate and heading: ", path[i], prev_angle)
 
     finally:
