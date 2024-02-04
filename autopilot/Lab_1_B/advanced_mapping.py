@@ -72,7 +72,7 @@ def scan_environment() -> [[]]:
             distance = fc.get_distance_at(angle)
         if distance == -2:
             continue
-        update_grid(angle, distance, last_angle, last_distance)
+        update_grid(grid, angle, distance, last_angle, last_distance)
 
         last_angle = angle
         last_distance = distance
