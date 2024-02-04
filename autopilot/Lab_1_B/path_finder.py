@@ -32,9 +32,9 @@ def euclidean_distance(start, goal):
 
 def get_neighbors_4dir(node, grid):
     '''
-    Gets the neighbours of node in 4 directions
+    Gets the neighbours of node in 8 directions
     '''
-    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # Up, Right, Down, Left
+    directions = [(0, 1), (1, 1), (-1, 1), (1, -1), (-1, -1), (1, 0), (0, -1), (-1, 0)]  # Up, Right, Down, Left
     neighbors = []
     for dx, dy in directions:
         x, y = node.x + dx, node.y + dy
@@ -65,7 +65,7 @@ def a_star_search_4dir(grid, start, goal):
             if (neighbor.x, neighbor.y) in closed_set:
                 continue
             neighbor.g = current_node.g + 1
-            neighbor.h = manhattan_distance(neighbor, goal)
+            neighbor.h = euclidean_distance(neighbor, goal)
             neighbor.f = neighbor.g + neighbor.h
             neighbor.parent = current_node
 

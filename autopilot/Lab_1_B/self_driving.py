@@ -13,7 +13,6 @@ CAR_POS = (settings.GRID_SIZE//2, 0)
 
 def calculate_angle(current_point, prev_point) -> float:
     # Calculate the angle between the current point and the next point
-    # angle is w.r.t. y-axis, ccw neg, cw pos
     delta_x = current_point[0] - prev_point[0]
     delta_y = current_point[1] - prev_point[1]
     angle_radians = math.atan2(delta_x, delta_y)
@@ -63,14 +62,15 @@ def follow_path(path, sleep_factor=0.05, power=10):
             fc.stop()
             prev_angle = angle
             print("moving forward...")
+            drive(consecutive_points)
 
             fc.stop()
-            print("stopped. Changing directions...")
+            print("stopped. Finding next waypoint...")
             time.sleep(sleep_factor)
 
             i += 1
 
-        print("Destination reached. Current heading and coordinate: ", prev_angle, path[i])
+        print("Destination reached. Final coordinate and heading: ", path[i], prev_angle)
 
     finally:
         fc.stop()
