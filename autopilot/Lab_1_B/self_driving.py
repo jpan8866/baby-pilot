@@ -195,6 +195,7 @@ def drive(distance: int, power: int = 10) -> int:
             fc.stop()
             traffic_cleared.wait()
             print("Traffic cleared, resume drive")
+            fc.forward(power)
         time.sleep(0.05)
         s = fc.speed_val()
         x += s * 0.05
