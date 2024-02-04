@@ -46,7 +46,7 @@ def get_neighbors_4dir(node, grid):
 def a_star_search_4dir(grid, start, goal):
     open_set = []
     # set h of start
-    start.f = manhattan_distance(start, goal)  # f = g + h = 0 + manhattan_distance
+    start.f = euclidean_distance(start, goal)  # f = g + h = 0 + manhattan_distance
     counter = count()  # use as secondary sorting criterion for primary queue for tie breaking
     heapq.heappush(open_set, (start.f, next(counter), start))
     closed_set = set()

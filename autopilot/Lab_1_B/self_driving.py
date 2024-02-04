@@ -17,7 +17,7 @@ from tflite_support.task import processor
 from tflite_support.task import vision
 
 
-CAR_POS = (settings.GRID_SIZE//2, 0)
+CAR_POS = (settings.GRID_SIZE//2, 0) # start position
 
 stop_event = threading.Event()
 traffic_cleared = threading.Event()
@@ -312,5 +312,6 @@ def route_continuously(goal: tuple):
 
 
 if __name__ == '__main__':
-    goal = (settings.GRID_SIZE//2, settings.GRID_SIZE*2 - 1)
+    # start = path_finder.Node(settings.GRID_SIZE // 2, 0)  # start position defined by CAR_POS
+    goal = path_finder.Node(settings.GRID_SIZE // 2, settings.GRID_SIZE*2 - 1)
     route_continuously(goal)
