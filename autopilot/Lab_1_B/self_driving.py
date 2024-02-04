@@ -90,7 +90,7 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
                         stopped = True
                         print("clearing stop event")
                         stop_event.clear()
-                        traffic_cleared.set()
+                        traffic_cleared.set()  #todo: needs to be unset for next detection
                     elif category_name in ["person"] and not stop_event.is_set():
                         print(category_name, " detected. Stopping car.")
                         stop_event.set()
