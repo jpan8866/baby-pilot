@@ -29,7 +29,7 @@ from tflite_support.task import vision
 #import utils_apache as utils  # if you want live video feed
 
 
-def run(model: str, camera_id: int, width: int, height: int, num_threads: int,
+def run_object_detection(model: str, camera_id: int, width: int, height: int, num_threads: int,
         enable_edgetpu: bool) -> None:
   """Continuously run inference on images acquired from the camera.
 
@@ -147,7 +147,7 @@ def main():
       default=False)
   args = parser.parse_args()
 
-  run(args.model, int(args.cameraId), args.frameWidth, args.frameHeight,
+  run_object_detection(args.model, int(args.cameraId), args.frameWidth, args.frameHeight,
       int(args.numThreads), bool(args.enableEdgeTPU))
 
 

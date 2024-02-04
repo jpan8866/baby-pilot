@@ -1,6 +1,8 @@
 from picar_4wd.speed import *
 import picar_4wd as fc
 import argparse
+import math
+import time
 
 
 def drive(distance: int, power: int = 10) -> int:
@@ -20,22 +22,6 @@ def drive(distance: int, power: int = 10) -> int:
     fc.left_rear_speed.deinit()
     fc.right_rear_speed.deinit()
     return x
-
-
-# def turn_diagonal(angle: int):
-#     '''
-#     stop car first before initiating turn
-#     experiment with gradually scaling up acceleration
-#     experiment with slower speed
-#     '''
-#     fc.stop()
-#     time.sleep(0.1)
-#     fc.turn_left(2)
-#     time.sleep(0.5)
-#     fc.turn_left(4)
-#     time.sleep(0.5)
-#     fc.turn_left(6)
-#     fc.stop()
 
 
 def turn(angle: int, power: int = 1):
