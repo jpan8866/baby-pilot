@@ -13,18 +13,18 @@ def calculate_angle(current_point, next_point) -> float:
     # Calculate the angle between the current point and the next point
     delta_x = next_point[0] - current_point[0]
     delta_y = next_point[1] - current_point[1]
-    angle_radians = math.atan2(delta_y, delta_x)
+    angle_radians = math.atan2(delta_x, delta_y)
     angle_degrees = math.degrees(angle_radians)
     # Convert the angle to the range (-180, 180]
-    if delta_x == 0:
-        angle_degrees -= 90
-    elif delta_x < 0:
-        angle_degrees = angle_degrees * -1 + 90 # Convert to negative angle
-    elif delta_x > 0:
-        if delta_y < 0:
-            angle_degrees = angle_degrees * -1 + 360
-        else:
-            angle_degrees = 90 - angle_degrees
+    # if delta_x == 0:
+    #     angle_degrees -= 90
+    # elif delta_x < 0:
+    #     angle_degrees = angle_degrees * -1 + 90 # Convert to negative angle
+    # elif delta_x > 0:
+    #     if delta_y < 0:
+    #         angle_degrees = angle_degrees * -1 + 360
+    #     else:
+    #         angle_degrees = 90 - angle_degrees
 
     return angle_degrees
 
@@ -33,15 +33,16 @@ def follow_path(path, sleep_factor=0.05, power=10):
     # Follow the path using the car
     print("following path....")
     i = 0
+    prev_angle = 0
     try:
         while i < len(path) - 1:
             current_point = path[i]
             print("current point: ", current_point)
-            next_point = path[i + 1]
-            print("next point: ", next_point)
+            prev_point = path[i - 1]
+            print("previous point: ", prev_point)
 
             # Calculate the angle between the current point and the next point
-            angle = calculate_angle(current_point, next_point)
+            angle = calculate_angle(current_point, prev_point)
             print("turn angle: ", angle)
 
             # Count consecutive points in the same direction
@@ -50,16 +51,18 @@ def follow_path(path, sleep_factor=0.05, power=10):
                 i += 1
                 next_point = path[i + 1]
                 consecutive_points += 1
-            print("consecutive points same direction: ", consecutive_points)
+            print("Distance to travel (cm): ", consecutive_points)
 
             # Turn the car to the calculated angle if needed
-            if angle > 0:
+            if angle - prev_angle < 0:
                 fc.turn_right(power)  # Adjust the power as needed
                 time.sleep(abs(angle) * 0.01 * 0.8)
-            elif angle < 0:
+                print("Turned right by ", angle)
+            elif angle - prev_angle > 0:
                 fc.turn_left(power)  # Adjust the power as needed
                 time.sleep(abs(angle) * 0.01 * 0.8)
-            print("turned.... if needed")
+                print("Turned left by ", abs(angle))
+            fc.stop()
             print("moving forward...")
 
             # Move the car forward to the next point
@@ -70,7 +73,7 @@ def follow_path(path, sleep_factor=0.05, power=10):
 
             # Stop the car
             fc.stop()
-            print("stopped. will change directions...")
+            print("stopped. Changing directions...")
             time.sleep(sleep_factor)
 
             i += 1
