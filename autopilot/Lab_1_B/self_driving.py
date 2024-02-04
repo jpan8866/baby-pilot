@@ -57,6 +57,7 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
     detector = vision.ObjectDetector.create_from_options(options)
 
     # Continuously capture images from the camera and run inference while goal not reached
+    stopped = False
     while not destination_reached.is_set():
         success, image = cap.read()
         if not success:
@@ -81,11 +82,11 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
                 category_name = category.category_name
                 probability = round(category.score, 2)
                 if probability > 0.50:
-                    print("Object: " + category_name, "probability: " + str(probability))
-                    if category_name in ["stop sign"] and not stop_event.is_set():
+                    if category_name in ["stop sign"] and not stop_event.is_set() and not stopped:
                         print(category_name, " detected. Stopping car.")
                         stop_event.set()
                         time.sleep(3)
+                        print("clearing stop event")
                         stop_event.clear()
                     elif category_name in ["person"] and not stop_event.is_set():
                         print(category_name, " detected. Stopping car.")
@@ -94,7 +95,14 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
                         stop_event.clear()
                     elif stop_event.is_set():
                         # traffic cleared
+                        print("Clearing stop event")
                         stop_event.clear()
+
+        # Clear the stop event if no stop sign has been detected for a while
+        if stop_sign_detected and time.time() - last_stop_sign_detection_time > 3:
+            print("Stop sign no longer detected. Resuming car.")
+            stop_sign_detected = False
+            stop_event.clear()
 
             def is_traffic_clear():
                 pass
