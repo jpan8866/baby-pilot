@@ -191,7 +191,7 @@ def drive(distance: int, power: int = 10) -> int:
     '''
     x = 0
     fc.forward(power)
-    while x < distance*0.50:
+    while x < distance*0.90:
         if stop_event.is_set():
             fc.stop()
             traffic_cleared.wait()
@@ -270,11 +270,13 @@ def route_continuously(goal: tuple):
     while True:
         i += 1
         grid = scan_environment()
+        print(grid)
 
         if 0 <= goal[0] <= settings.GRID_SIZE and 0 <= goal[1] < settings.GRID_SIZE:
             print("Goal within current map")
             goal_node = path_finder.Node(goal[0], goal[1])
             path = path_finder.a_star_search_4dir(grid, start_node, goal_node)
+            print(path)
             # visualize map
             if path:
                 mark_path_on_grid(grid, path)
@@ -289,10 +291,14 @@ def route_continuously(goal: tuple):
             print("local goal: ", local_goal)
             local_goal_node = path_finder.Node(local_goal[0], local_goal[1])
             local_path = path_finder.a_star_search_4dir(grid, start_node, local_goal_node)
+            print(local_path)
             # visualize map
             if local_path:
                 mark_path_on_grid(grid, local_path)
-            np.savetxt(f'./grid_{i}.txt', grid, fmt='%d')  # scp file to laptop to view
+                np.savetxt(f'./grid_{i}.txt', grid, fmt='%d')  # scp file to laptop to view
+            else:
+                print("No path generated")
+                break
 
             heading = follow_path(local_path)
             # update global goal
@@ -316,5 +322,5 @@ def route_continuously(goal: tuple):
 
 if __name__ == '__main__':
     # start = path_finder.Node(settings.GRID_SIZE // 2, 0)  # start position defined by CAR_POS
-    goal = (settings.GRID_SIZE // 2, settings.GRID_SIZE*2 - 1)
+    goal = (settings.GRID_SIZE // 2, settings.GRID_SIZE*2 - 2)
     route_continuously(goal)
