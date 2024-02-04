@@ -48,12 +48,12 @@ def update_grid(angle, distance, last_angle, last_distance):
     #     draw_line(x0, y0, x1, y1)
     if 0 <= x1 < GRID_SIZE and 0 <= y1 < GRID_SIZE:
         add_point(x1, y1)
-        if last_angle is not None:
-            x0, y0 = polar_to_cartesian(last_angle, last_distance)
-            x0 += CAR_POS[0]
-            y0 += CAR_POS[1]
-            if 0 <= x0 < GRID_SIZE and 0 <= y0 < GRID_SIZE:
-                draw_line(x0, y0, x1, y1)
+        # if last_angle is not None:
+        #     x0, y0 = polar_to_cartesian(last_angle, last_distance)
+        #     x0 += CAR_POS[0]
+        #     y0 += CAR_POS[1]
+        #     if 0 <= x0 < GRID_SIZE and 0 <= y0 < GRID_SIZE:
+        #         draw_line(x0, y0, x1, y1)
 
 def add_point(x, y):
     """
