@@ -312,5 +312,5 @@ def route_continuously(goal: tuple):
 
 
 if __name__ == '__main__':
-    goal = (CAR_POS//2, settings.GRID_SIZE*2 - 1)
+    goal = (settings.GRID_SIZE//2, settings.GRID_SIZE*2 - 1)
     route_continuously(goal)
