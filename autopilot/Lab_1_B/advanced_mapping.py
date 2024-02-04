@@ -41,13 +41,12 @@ def update_grid(angle, distance, last_angle, last_distance):
         x0, y0 = polar_to_cartesian(last_angle, last_distance)
         x0 += CAR_POS[0]
         y0 += CAR_POS[1]
+        print(x0, y0)
 
     if last_angle is not None and euclidean_distance(x0, y0, x1, y1) <= settings.MIN_DISTANCE_TO_INTERPOLATE:
         # Interpolate between the last point and the current point if the delta is 1 angle increment
         draw_line(x0, y0, x1, y1)
     elif 0 <= x1 < GRID_SIZE and 0 <= y1 < GRID_SIZE:
-        print("object at: ")
-        print(x1, y1)
         add_point(x1, y1)
 
 

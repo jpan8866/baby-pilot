@@ -54,7 +54,6 @@ def a_star_search_4dir(grid, start, goal):
     while open_set:
         current_f, _, current_node = heapq.heappop(open_set)
         closed_set.add((current_node.x, current_node.y))
-        print(current_node.x, current_node.y, goal.x, goal.y)
         if current_node == goal:
             path = []
             while current_node:
