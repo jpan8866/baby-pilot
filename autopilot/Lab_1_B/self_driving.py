@@ -1,5 +1,6 @@
 from advanced_mapping import scan_environment
 from vehicle_control import drive
+from utils import mark_path_on_grid
 import picar_4wd as fc
 import path_finder
 import numpy as np
@@ -48,11 +49,13 @@ def follow_path(path, sleep_factor=0.05, power=10):
             # Calculate the angle between the current point and the next point
             if i > 0:
                 angle = calculate_angle(current_point, prev_point)
-                print("angle with previous point", angle)
+                print("previous point: ", prev_point)
+                print("Current heading: ", prev_angle)
+                print("Next heading: ", angle)
 
             # Count consecutive points in the same direction
             consecutive_points = 0
-            print(calculate_angle(current_point, path[i + 1]))
+            print(calculate_angle(path[i + 1], current_point))
             while i < len(path) - 2 and angle == calculate_angle(path[i + 1], current_point):
                 i += 1
                 consecutive_points += 1
@@ -60,11 +63,11 @@ def follow_path(path, sleep_factor=0.05, power=10):
             print("Distance to travel (cm): ", consecutive_points)
 
             # Turn the car to the calculated angle if needed
-            if angle - prev_angle < 0:
+            if angle - prev_angle > 0:
                 fc.turn_right(power)  # Adjust the power as needed
                 time.sleep(abs(angle) * 0.01 * 0.8)
                 print("Turned right by ", abs(angle))
-            elif angle - prev_angle > 0:
+            elif angle - prev_angle < 0:
                 fc.turn_left(power)  # Adjust the power as needed
                 time.sleep(abs(angle) * 0.01 * 0.8)
                 print("Turned left by ", abs(angle))
@@ -103,6 +106,11 @@ def route():
     path = path_finder.a_star_search_4dir(scanned_grid, start, goal)
     print("Path: ", path)
     print("Path length: ", len(path))
+
+    # visualize map
+    if path:
+        mark_path_on_grid(scanned_grid, path)
+    np.savetxt('./grid.txt', scanned_grid, fmt='%d')  # scp file to laptop to view
 
     # Visualize the grid
     # visualize_grid(scanned_grid, path, start, goal)
