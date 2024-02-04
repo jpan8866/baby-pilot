@@ -58,7 +58,7 @@ def add_point(x, y):
                 grid[new_x, new_y] = 1
 
 
-def scan_environment() -> None:
+def scan_environment() -> [[]]:
     """
     This function calls update_grid to set grid cell values to 1.
     """

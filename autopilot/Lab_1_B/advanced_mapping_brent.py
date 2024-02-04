@@ -421,7 +421,7 @@ def route_continuously():
             print(path)
 
             # Visualize the grid
-            visualize_grid(current_grid, path, CAR_POS, global_target)
+            # visualize_grid(current_grid, path, CAR_POS, global_target)
 
             # Follow the path
             follow_path(path)

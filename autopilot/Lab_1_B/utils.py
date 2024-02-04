@@ -46,3 +46,43 @@ def visualize_path(grid):
 def mark_path_on_grid(grid, path, path_value=3):
     for x, y in path:
         grid[x, y] = path_value
+
+
+def find_edge_point(start, goal, GRID_SIZE):
+    x1, y1 = start
+    x2, y2 = goal
+    edge_point = None
+
+    # Handle vertical line case
+    if x1 == x2:
+        if y2 > y1:
+            edge_point = (x1, GRID_SIZE - 1)
+        else:
+            edge_point = (x1, 0)
+        return edge_point
+
+    # Calculate slope
+    m = (y2 - y1) / (x2 - x1)
+    # Calculate y-intercept
+    b = y1 - m * x1
+
+    # Find potential intersections with grid boundaries
+    intersections = []
+    # Top edge
+    intersections.append(((GRID_SIZE - 1 - b) / m, GRID_SIZE - 1))
+    # Bottom edge
+    intersections.append((-b / m, 0))
+    # Right edge
+    intersections.append((GRID_SIZE - 1, m * (GRID_SIZE - 1) + b))
+    # Left edge
+    intersections.append((0, b))
+
+    # Filter valid intersections
+    valid_intersections = [p for p in intersections if 0 <= p[0] < GRID_SIZE and 0 <= p[1] < GRID_SIZE]
+
+    # Select the intersection that is in the direction of the goal
+    if valid_intersections:
+        edge_point = min(valid_intersections, key=lambda p: ((p[0] - x1) ** 2 + (p[1] - y1) ** 2))
+
+    return edge_point
+

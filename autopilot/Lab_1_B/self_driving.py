@@ -1,5 +1,5 @@
 from advanced_mapping import scan_environment
-from utils import mark_path_on_grid
+from utils import mark_path_on_grid, find_edge_point
 
 import picar_4wd as fc
 import threading
@@ -90,7 +90,7 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
                         stopped = True
                         print("clearing stop event")
                         stop_event.clear()
-                        traffic_cleared.set()  #todo: needs to be unset for next detection
+                        traffic_cleared.set()
                     # elif category_name in ["person"] and not stop_event.is_set():
                     #     print(category_name, " detected. Stopping car.")
                     #     stop_event.set()
@@ -100,6 +100,8 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
                         # traffic cleared
                         print("Clearing stop event")
                         stop_event.clear()
+                        traffic_cleared.set()
+        traffic_cleared.unset()
 
         # Calculate the FPS
         end_time = time.time()
@@ -176,6 +178,7 @@ def follow_path(path, sleep_factor=0.05, power=10):
 
         destination_reached.set()
         print("Destination reached. Final coordinate and heading: ", path[i], prev_angle)
+        return prev_angle
 
     finally:
         fc.stop()
@@ -254,5 +257,59 @@ def route():
     # follow_path(path)
 
 
+def route_continuously(goal: tuple):
+    """
+    goal: absolute x,y coordinates
+    Continuously route to the destination.
+    When the destination is outside the range of the local grid, this function
+    takes the approach of making a path from destination to start, and subtracting
+    the the distance needed until it's within the range of the local grid.
+    """
+    i = 0
+    while True:
+        i += 1
+        grid = scan_environment()
+
+        if 0 <= goal[0] <= settings.GRID_SIZE and 0 <= goal[1] < settings.GRID_SIZE:
+            print("Goal within current map")
+            path = path_finder.a_star_search_4dir(grid, CAR_POS, goal)
+            # visualize map
+            if path:
+                mark_path_on_grid(grid, path)
+            np.savetxt(f'./grid_{i}.txt', grid, fmt='%d')  # scp file to laptop to view
+
+            follow_path(path)
+            break
+        elif (goal[0] >= settings.GRID_SIZE or goal[0] <= 0 or goal[1] >= settings.GRID_SIZE):
+            print("Goal beyond current map. Go to edge and remap")
+            local_goal = find_edge_point(CAR_POS, goal, settings.GRID_SIZE)
+
+            print("local goal: ", local_goal)
+            local_path = path_finder.a_star_search_4dir(grid, CAR_POS, local_goal)
+            # visualize map
+            if local_path:
+                mark_path_on_grid(grid, local_path)
+            np.savetxt(f'./grid_{i}.txt', grid, fmt='%d')  # scp file to laptop to view
+
+            heading = follow_path(local_path)
+            # update global goal
+            goal = (goal[0] - (local_goal[0] - CAR_POS[0]), goal[1] - (local_goal[1] - CAR_POS[1]))
+            print("new goal: ", goal)
+
+            print("reset car to heading 0 degrees")
+            turn_angle = 0 - heading
+            if turn_angle > 0:
+                fc.turn_right(10)  # Adjust the power as needed
+                time.sleep(abs(turn_angle) * 0.02 * 0.8)
+                print("Turned right by ", abs(turn_angle))
+            elif turn_angle < 0:
+                fc.turn_left(10)  # Adjust the power as needed
+                time.sleep(abs(turn_angle) * 0.02 * 0.8)
+                print("Turned left by ", abs(turn_angle))
+            fc.stop()
+        else:
+            print("Goal point invalid: ", goal)
+
+
 if __name__ == '__main__':
-    route()
+    route_continuously()
