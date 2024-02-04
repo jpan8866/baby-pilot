@@ -12,6 +12,7 @@ goal = Node(GRID_SIZE//2, GRID_SIZE-1)
 
 # Run A* search to find the path
 path = a_star_search_4dir(grid, start, goal)
+print(path)
 if path:
     mark_path_on_grid(grid, path)
 
