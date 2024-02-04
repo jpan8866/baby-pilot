@@ -272,7 +272,8 @@ def route_continuously(goal: tuple):
 
         if 0 <= goal[0] <= settings.GRID_SIZE and 0 <= goal[1] < settings.GRID_SIZE:
             print("Goal within current map")
-            path = path_finder.a_star_search_4dir(grid, CAR_POS, goal)
+            goal_node = path_finder.Node(goal.x, goal.y)
+            path = path_finder.a_star_search_4dir(grid, CAR_POS, goal_node)
             # visualize map
             if path:
                 mark_path_on_grid(grid, path)
@@ -285,7 +286,8 @@ def route_continuously(goal: tuple):
             local_goal = find_edge_point(CAR_POS, goal, settings.GRID_SIZE)
 
             print("local goal: ", local_goal)
-            local_path = path_finder.a_star_search_4dir(grid, CAR_POS, local_goal)
+            local_goal_node = path_finder.Node(local_goal.x, local_goal.y)
+            local_path = path_finder.a_star_search_4dir(grid, CAR_POS, local_goal_node)
             # visualize map
             if local_path:
                 mark_path_on_grid(grid, local_path)
@@ -313,5 +315,5 @@ def route_continuously(goal: tuple):
 
 if __name__ == '__main__':
     # start = path_finder.Node(settings.GRID_SIZE // 2, 0)  # start position defined by CAR_POS
-    goal = path_finder.Node(settings.GRID_SIZE // 2, settings.GRID_SIZE*2 - 1)
+    goal = (settings.GRID_SIZE // 2, settings.GRID_SIZE*2 - 1)
     route_continuously(goal)
