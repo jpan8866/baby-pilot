@@ -52,7 +52,7 @@ def update_grid(angle, distance, last_angle, last_distance):
             x0, y0 = polar_to_cartesian(last_angle, last_distance)
             x0 += CAR_POS[0]
             y0 += CAR_POS[1]
-            if 0 <= x0 < GRID_SIZE and 0 <= y0 < GRID_SIZE:
+            if 0 <= x0 < GRID_SIZE and 0 <= y0 < GRID_SIZE and euclidean_distance(x0, y0, x1, y1) <= settings.MIN_DISTANCE_TO_INTERPOLATE:
                 draw_line(x0, y0, x1, y1)
 
 def add_point(x, y):
