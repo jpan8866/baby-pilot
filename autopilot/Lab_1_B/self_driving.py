@@ -310,10 +310,10 @@ def route_continuously(goal: tuple):
             local_path = path_finder.a_star_search_4dir(grid, start_node, local_goal_node)
             print(local_path)
             # visualize map
-            np.savetxt(f'./grid_{i}.txt', grid, fmt='%d')  # scp file to laptop to view
             if local_path:
                 mark_path_on_grid(grid, local_path)
-            else:
+            np.savetxt(f'./grid_{i}.txt', grid, fmt='%d')  # scp file to laptop to view
+            if not local_path:
                 print("No path generated")
                 break
 
