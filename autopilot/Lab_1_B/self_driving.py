@@ -342,7 +342,7 @@ def route_continuously(dest: tuple):
             dest = (dest[0] - (local_goal[0] - CAR_POS[0]), dest[1] - (local_goal[1] - CAR_POS[1]))
             print("new goal: ", dest)
 
-            print("Point car towards goal")
+            print("updating reference frame")
             dest = update_reference_frame(dest, CAR_POS)
             print("adjusted goal to local frame of reference: ", dest)
         else:
@@ -359,12 +359,12 @@ def update_reference_frame(dest, start) -> tuple:
     global last_heading_in_thread
     turn_angle = calculate_angle(dest, start) - last_heading_in_thread
     if turn_angle > 0:
-        fc.turn_right(10)  # Adjust the power as needed
-        time.sleep(abs(turn_angle) * 0.02 * 0.8)
+        fc.turn_right(1)  # Adjust the power as needed
+        time.sleep(abs(turn_angle) * 0.015 * 0.8)
         print("Turned right by ", abs(turn_angle))
     elif turn_angle < 0:
-        fc.turn_left(10)  # Adjust the power as needed
-        time.sleep(abs(turn_angle) * 0.02 * 0.8)
+        fc.turn_left(1)  # Adjust the power as needed
+        time.sleep(abs(turn_angle) * 0.015 * 0.8)
         print("Turned left by ", abs(turn_angle))
     fc.stop()
 
