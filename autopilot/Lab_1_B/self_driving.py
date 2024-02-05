@@ -285,6 +285,8 @@ def route_continuously(goal: tuple):
             if path:
                 mark_path_on_grid(grid, path)
             np.savetxt(f'./grid_{i}.txt', grid, fmt='%d')  # scp file to laptop to view
+            if path is None:
+                break
 
             path_thread = threading.Thread(target=follow_path, args=(path,))
             detection_thread = threading.Thread(target=run_object_detection, args=(settings.TF_MODEL,
@@ -313,7 +315,7 @@ def route_continuously(goal: tuple):
             if local_path:
                 mark_path_on_grid(grid, local_path)
             np.savetxt(f'./grid_{i}.txt', grid, fmt='%d')  # scp file to laptop to view
-            if not local_path:
+            if local_path is None:
                 print("No path generated")
                 break
 
