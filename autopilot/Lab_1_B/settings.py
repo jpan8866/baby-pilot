@@ -1,5 +1,5 @@
 GRID_SIZE = 80
-PADDING_SIZE = 20  # number of cells to pad around a point in grid
+PADDING_SIZE = 25  # number of cells to pad around a point in grid
 ANGLE_INCREMENT = 5
 MIN_DISTANCE_TO_INTERPOLATE = 10  # cm
 TF_MODEL = "efficientdet_lite0.tflite"
