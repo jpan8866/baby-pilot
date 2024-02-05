@@ -22,7 +22,8 @@ CAR_POS = (settings.GRID_SIZE//2, 0)  # start position
 stop_event = threading.Event()
 traffic_cleared = threading.Event()
 destination_reached = threading.Event()
-last_heading_in_thread = 0  # use to capture angle returned by follow_path in thread
+last_heading_in_thread = 0  # use to capture angle returned by follow_path in thread. Initialized to 0, default heading
+global_car_position = CAR_POS
 
 
 def run_object_detection(model: str, camera_id: int, width: int, height: int, num_threads: int,
@@ -185,7 +186,7 @@ def drive(distance: int, power: int = 10) -> int:
     '''
     x = 0
     fc.forward(power)
-    while x < distance * 0.5:
+    while x < distance * 0.9:
         if stop_event.is_set():
             fc.stop()
             traffic_cleared.wait()
@@ -250,7 +251,7 @@ def route():
     # follow_path(path)
 
 
-def route_continuously(goal: tuple):
+def route_continuously(dest: tuple):
     """
     goal: absolute x,y coordinates
     Continuously route to the destination.
@@ -259,6 +260,18 @@ def route_continuously(goal: tuple):
     the the distance needed until it's within the range of the local grid.
     """
     global last_heading_in_thread
+    global global_car_position
+    # if car not in direction of goal:
+    #     turn car towards goal
+    #     update global_car_position with the goal
+    #     update goal with new frame of reference (car turned)
+    if calculate_angle(dest, global_car_position) - last_heading_in_thread != 0:
+        global_car_position = dest  # save global car position for next potential run
+        dest = update_reference_frame(dest, global_car_position)
+    else:
+        # if already headed towards goal, save goal in global var for next runs
+        global_car_position = dest
+
     fc.start_speed_thread()
     i = 0
     start_node = path_finder.Node(settings.GRID_SIZE // 2, 0)
@@ -267,9 +280,9 @@ def route_continuously(goal: tuple):
         grid = scan_environment()
         # print(grid)
 
-        if 0 <= goal[0] <= settings.GRID_SIZE and 0 <= goal[1] < settings.GRID_SIZE:
+        if 0 <= dest[0] <= settings.GRID_SIZE and 0 <= dest[1] < settings.GRID_SIZE:
             print("Goal within current map")
-            goal_node = path_finder.Node(goal[0], goal[1])
+            goal_node = path_finder.Node(dest[0], dest[1])
             path = path_finder.a_star_search(grid, start_node, goal_node)
             # print(path)
             # visualize map
@@ -294,9 +307,9 @@ def route_continuously(goal: tuple):
 
             # follow_path(path)
             break
-        elif (goal[0] >= settings.GRID_SIZE or goal[0] <= 0 or goal[1] >= settings.GRID_SIZE):
+        elif (dest[0] >= settings.GRID_SIZE or dest[0] <= 0 or dest[1] >= settings.GRID_SIZE):
             print("Goal beyond current map. Go to edge and remap")
-            local_goal = find_edge_point(CAR_POS, goal, settings.GRID_SIZE)
+            local_goal = find_edge_point(CAR_POS, dest, settings.GRID_SIZE)
 
             print("local goal: ", local_goal)
             local_goal_node = path_finder.Node(local_goal[0], local_goal[1])
@@ -326,27 +339,114 @@ def route_continuously(goal: tuple):
 
             # heading = follow_path(local_path)
             # update global goal
-            goal = (goal[0] - (local_goal[0] - CAR_POS[0]), goal[1] - (local_goal[1] - CAR_POS[1]))
-            print("new goal: ", goal)
+            dest = (dest[0] - (local_goal[0] - CAR_POS[0]), dest[1] - (local_goal[1] - CAR_POS[1]))
+            print("new goal: ", dest)
 
             print("Point car towards goal")
-            turn_angle = calculate_angle(goal, CAR_POS) - last_heading_in_thread
-            if turn_angle > 0:
-                fc.turn_right(10)  # Adjust the power as needed
-                time.sleep(abs(turn_angle) * 0.02 * 0.8)
-                print("Turned right by ", abs(turn_angle))
-            elif turn_angle < 0:
-                fc.turn_left(10)  # Adjust the power as needed
-                time.sleep(abs(turn_angle) * 0.02 * 0.8)
-                print("Turned left by ", abs(turn_angle))
-            fc.stop()
+            dest = update_reference_frame(dest, CAR_POS)
+            print("adjusted goal to local frame of reference: ", dest)
         else:
-            print("Goal point invalid: ", goal)
+            print("Goal point invalid: ", dest)
+
+
+def update_reference_frame(dest, start) -> tuple:
+    '''
+    Updates the reference frame by turning the car towards goal
+    the goal point is updated to fit the reference frame of the car's new heading
+    '''
+
+    # Turn car towards goal
+    global last_heading_in_thread
+    turn_angle = calculate_angle(dest, start) - last_heading_in_thread
+    if turn_angle > 0:
+        fc.turn_right(10)  # Adjust the power as needed
+        time.sleep(abs(turn_angle) * 0.02 * 0.8)
+        print("Turned right by ", abs(turn_angle))
+    elif turn_angle < 0:
+        fc.turn_left(10)  # Adjust the power as needed
+        time.sleep(abs(turn_angle) * 0.02 * 0.8)
+        print("Turned left by ", abs(turn_angle))
+    fc.stop()
+
+    # update goal coordinate to fit in car's new reference frame, note angle is 0 since heading toward goal
+    distance = ((start[0] - dest[0])**2 + (start[1] - dest[1])**2)**0.5
+    return CAR_POS[0], distance
+
+
+def route_continuously_no_detection(dest):
+    """
+    goal: absolute x,y coordinates
+    Continuously route to the destination.
+    When the destination is outside the range of the local grid, this function
+    takes the approach of making a path from destination to start, and subtracting
+    the the distance needed until it's within the range of the local grid.
+    """
+    global last_heading_in_thread
+    global global_car_position
+    # if car not in direction of goal:
+    #     turn car towards goal
+    #     update global_car_position with the goal
+    #     update goal with new frame of reference (car turned)
+    if calculate_angle(dest, global_car_position) - last_heading_in_thread != 0:
+        global_car_position = dest  # save global car position for next potential run
+        dest = update_reference_frame(dest, global_car_position)
+    else:
+        # if already headed towards goal, save goal in global var for next runs
+        global_car_position = dest
+
+    fc.start_speed_thread()
+    i = 0
+    start_node = path_finder.Node(settings.GRID_SIZE // 2, 0)
+    while True:
+        i += 1
+        grid = scan_environment()
+        # print(grid)
+
+        if 0 <= dest[0] <= settings.GRID_SIZE and 0 <= dest[1] < settings.GRID_SIZE:
+            print("Goal within current map")
+            goal_node = path_finder.Node(dest[0], dest[1])
+            path = path_finder.a_star_search(grid, start_node, goal_node)
+            # print(path)
+            # visualize map
+            if path:
+                mark_path_on_grid(grid, path)
+            np.savetxt(f'./grid_{i}.txt', grid, fmt='%d')  # scp file to laptop to view
+            if path is None:
+                break
+
+            follow_path(path)
+            break
+        elif (dest[0] >= settings.GRID_SIZE or dest[0] <= 0 or dest[1] >= settings.GRID_SIZE):
+            print("Goal beyond current map. Go to edge and remap")
+            local_goal = find_edge_point(CAR_POS, dest, settings.GRID_SIZE)
+
+            print("local goal: ", local_goal)
+            local_goal_node = path_finder.Node(local_goal[0], local_goal[1])
+            local_path = path_finder.a_star_search(grid, start_node, local_goal_node)
+            print(local_path)
+            # visualize map
+            if local_path:
+                mark_path_on_grid(grid, local_path)
+            np.savetxt(f'./grid_{i}.txt', grid, fmt='%d')  # scp file to laptop to view
+            if local_path is None:
+                print("No path generated")
+                break
+
+            heading = follow_path(local_path)
+            # update global goal
+            dest = (dest[0] - (local_goal[0] - CAR_POS[0]), dest[1] - (local_goal[1] - CAR_POS[1]))
+            print("new goal: ", dest)
+
+            print("Point car towards goal")
+            dest = update_reference_frame(dest, CAR_POS)
+            print("adjusted goal to local frame of reference: ", dest)
+        else:
+            print("Goal point invalid: ", dest)
 
 
 if __name__ == '__main__':
     # start = path_finder.Node(settings.GRID_SIZE // 2, 0)  # start position defined by CAR_POS
     goal = (settings.GRID_SIZE // 2, settings.GRID_SIZE*2 - 2)
     # second_goal = (settings.GRID_SIZE -1, settings.GRID_SIZE*2 - 2)
-    route_continuously(goal)
+    route_continuously_no_detection(goal)
     # route_continuously(second_goal)
