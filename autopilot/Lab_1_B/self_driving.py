@@ -455,5 +455,5 @@ if __name__ == '__main__':
 
     # GOAL NUMBER 2 (left turn from goal 1)
     print("MOVING TO SECOND DESTINATION")
-    second_goal = (2 * settings.GRID_SIZE - 2, settings.GRID_SIZE*2 - 2)
+    second_goal = (int(2.5 * settings.GRID_SIZE) - 2, settings.GRID_SIZE*2 - 2)
     route_continuously_no_detection(second_goal)
