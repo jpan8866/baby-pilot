@@ -1,6 +1,6 @@
 import numpy as np
 # from utils import visualize_map
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import picar_4wd as fc
 import settings
 
@@ -65,7 +65,6 @@ def scan_environment() -> [[]]:
     last_distance = None
     grid = np.zeros((GRID_SIZE, GRID_SIZE))
 
-    #todo: read from last angle to avoid always turning to -90 first
     for angle in range(-90, 91, ANGLE_INCREMENT):
         # Ignore distances that are beyond our max range. This avoids unnecessary maneuvers based on distant objects
         for _ in range(2):
@@ -103,6 +102,11 @@ def draw_line(grid, x0, y0, x1, y1):
         if e2 <= dx:  # e_xy + e_y < 0
             err += dx
             y0 += sy
+
+
+
+
+
 
 
 # ------------------- Uncomment below for testing purposes ------------------

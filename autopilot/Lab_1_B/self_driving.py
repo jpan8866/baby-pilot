@@ -17,7 +17,7 @@ from tflite_support.task import processor
 from tflite_support.task import vision
 
 
-CAR_POS = (settings.GRID_SIZE//2, 0) # start position
+CAR_POS = (settings.GRID_SIZE//2, 0)  # start position
 
 stop_event = threading.Event()
 traffic_cleared = threading.Event()
@@ -47,8 +47,6 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, width)
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
-    fps_avg_frame_count = 10
-
     # Initialize the object detection model
     base_options = core.BaseOptions(
       file_name=model, use_coral=enable_edgetpu, num_threads=num_threads)
@@ -59,7 +57,6 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
     detector = vision.ObjectDetector.create_from_options(options)
 
     # Continuously capture images from the camera and run inference while goal not reached
-    stopped = False
     while not destination_reached.is_set():
         success, image = cap.read()
         if not success:
@@ -84,19 +81,17 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
                 category_name = category.category_name
                 probability = round(category.score, 2)
                 if probability > 0.50:
-                    if category_name in ["stop sign"] and not stop_event.is_set() and not stopped:
+                    if category_name in ["stop sign"] and not stop_event.is_set():
                         print(category_name, " detected. Stopping car.")
                         stop_event.set()
                         time.sleep(3)
-                        stopped = True
                         print("clearing stop event")
                         stop_event.clear()
                         traffic_cleared.set()
+                        time.sleep(3)
                     # elif category_name in ["person"] and not stop_event.is_set():
                     #     print(category_name, " detected. Stopping car.")
                     #     stop_event.set()
-                    #     time.sleep(3)
-                    #     stop_event.clear()
                     elif stop_event.is_set():
                         # traffic cleared
                         print("Clearing stop event")
@@ -112,9 +107,6 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
             print(f"Frame rate: {fps:.2f} FPS")
             counter = 0
             start_time = time.time()
-
-        # Print the FPS
-        # print("fps: " + str(fps))
 
         # Stop the program if the ESC key is pressed.
         if cv2.waitKey(1) == 27:
@@ -338,8 +330,8 @@ def route_continuously(goal: tuple):
             goal = (goal[0] - (local_goal[0] - CAR_POS[0]), goal[1] - (local_goal[1] - CAR_POS[1]))
             print("new goal: ", goal)
 
-            print("reset car to heading 0 degrees")
-            turn_angle = 0 - last_heading_in_thread
+            print("Point car towards goal")
+            turn_angle = calculate_angle(goal, CAR_POS) - last_heading_in_thread
             if turn_angle > 0:
                 fc.turn_right(10)  # Adjust the power as needed
                 time.sleep(abs(turn_angle) * 0.02 * 0.8)
