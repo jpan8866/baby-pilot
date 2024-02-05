@@ -22,6 +22,7 @@ CAR_POS = (settings.GRID_SIZE//2, 0) # start position
 stop_event = threading.Event()
 traffic_cleared = threading.Event()
 destination_reached = threading.Event()
+last_heading_in_thread = 0  # use to capture angle returned by follow_path in thread
 
 
 def run_object_detection(model: str, camera_id: int, width: int, height: int, num_threads: int,
@@ -123,6 +124,7 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
 
 
 def follow_path(path, sleep_factor=0.05, power=10):
+    global last_heading_in_thread
     # Follow the path using the car
     print("following path....")
     i = 0
@@ -177,6 +179,7 @@ def follow_path(path, sleep_factor=0.05, power=10):
 
         destination_reached.set()
         print("Destination reached. Final coordinate and heading: ", path[i], prev_angle)
+        last_heading_in_thread = prev_angle
         return prev_angle
 
     finally:
@@ -191,7 +194,7 @@ def drive(distance: int, power: int = 10) -> int:
     '''
     x = 0
     fc.forward(power)
-    while x < distance:
+    while x < distance * 0.5:
         if stop_event.is_set():
             fc.stop()
             traffic_cleared.wait()
@@ -264,25 +267,39 @@ def route_continuously(goal: tuple):
     takes the approach of making a path from destination to start, and subtracting
     the the distance needed until it's within the range of the local grid.
     """
+    global last_heading_in_thread
     fc.start_speed_thread()
     i = 0
     start_node = path_finder.Node(settings.GRID_SIZE // 2, 0)
     while True:
         i += 1
         grid = scan_environment()
-        print(grid)
+        # print(grid)
 
         if 0 <= goal[0] <= settings.GRID_SIZE and 0 <= goal[1] < settings.GRID_SIZE:
             print("Goal within current map")
             goal_node = path_finder.Node(goal[0], goal[1])
             path = path_finder.a_star_search_4dir(grid, start_node, goal_node)
-            print(path)
+            # print(path)
             # visualize map
             if path:
                 mark_path_on_grid(grid, path)
             np.savetxt(f'./grid_{i}.txt', grid, fmt='%d')  # scp file to laptop to view
 
-            follow_path(path)
+            path_thread = threading.Thread(target=follow_path, args=(path,))
+            detection_thread = threading.Thread(target=run_object_detection, args=(settings.TF_MODEL,
+                                                                                   settings.CAMERA_ID,
+                                                                                   settings.FRAME_WIDTH,
+                                                                                   settings.FRAME_HEIGHT,
+                                                                                   settings.NUM_THREADS,
+                                                                                   settings.ENABLE_TPU,))
+            path_thread.start()
+            detection_thread.start()
+
+            path_thread.join()
+            detection_thread.join()
+
+            # follow_path(path)
             break
         elif (goal[0] >= settings.GRID_SIZE or goal[0] <= 0 or goal[1] >= settings.GRID_SIZE):
             print("Goal beyond current map. Go to edge and remap")
@@ -300,13 +317,27 @@ def route_continuously(goal: tuple):
                 print("No path generated")
                 break
 
-            heading = follow_path(local_path)
+            path_thread = threading.Thread(target=follow_path, args=(local_path,))
+            detection_thread = threading.Thread(target=run_object_detection, args=(settings.TF_MODEL,
+                                                                                   settings.CAMERA_ID,
+                                                                                   settings.FRAME_WIDTH,
+                                                                                   settings.FRAME_HEIGHT,
+                                                                                   settings.NUM_THREADS,
+                                                                                   settings.ENABLE_TPU,))
+
+            path_thread.start()
+            detection_thread.start()
+
+            path_thread.join()
+            detection_thread.join()
+
+            # heading = follow_path(local_path)
             # update global goal
             goal = (goal[0] - (local_goal[0] - CAR_POS[0]), goal[1] - (local_goal[1] - CAR_POS[1]))
             print("new goal: ", goal)
 
             print("reset car to heading 0 degrees")
-            turn_angle = 0 - heading
+            turn_angle = 0 - last_heading_in_thread
             if turn_angle > 0:
                 fc.turn_right(10)  # Adjust the power as needed
                 time.sleep(abs(turn_angle) * 0.02 * 0.8)
