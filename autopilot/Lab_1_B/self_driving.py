@@ -273,7 +273,7 @@ def route_continuously(dest: tuple):
         # if already headed towards goal, save goal in global var for next runs
         global_car_position = dest
 
-    fc.start_speed_thread()
+    # fc.start_speed_thread()
     i = 0
     start_node = path_finder.Node(settings.GRID_SIZE // 2, 0)
     while True:
