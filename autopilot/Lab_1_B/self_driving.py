@@ -388,10 +388,11 @@ def route_continuously_no_detection(dest):
     #     turn car towards goal
     #     update global_car_position with the goal
     #     update goal with new frame of reference (car turned)
-    print(dest, global_car_position, last_heading_in_thread)
+    print(dest, global_car_position, last_heading_in_thread, calculate_angle(dest, global_car_position))
     if calculate_angle(dest, global_car_position) - last_heading_in_thread != 0:
+        temp_dest = update_reference_frame(dest, global_car_position)
         global_car_position = dest  # save global car position for next potential run
-        dest = update_reference_frame(dest, global_car_position)
+        dest = temp_dest
     else:
         # if already headed towards goal, save goal in global var for next runs
         global_car_position = dest
