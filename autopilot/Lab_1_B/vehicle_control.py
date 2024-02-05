@@ -73,7 +73,7 @@ def drive_calculated(distance: int) -> int:
     '''
     calculated 26cm/s for power = 1
     '''
-    speed = 26
+    speed = 25
     time_to_drive = distance/speed
     fc.forward(1)
     time.sleep(time_to_drive)
