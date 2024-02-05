@@ -73,6 +73,7 @@ def a_star_search(grid, start, goal):
 
             if add_to_open(open_set, neighbor, counter):
                 heapq.heappush(open_set, (neighbor.f, next(counter), neighbor))
+    print("No path found.")
     return None
 
 

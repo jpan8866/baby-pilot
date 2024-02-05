@@ -388,6 +388,7 @@ def route_continuously_no_detection(dest):
     #     turn car towards goal
     #     update global_car_position with the goal
     #     update goal with new frame of reference (car turned)
+    print(dest, global_car_position, last_heading_in_thread)
     if calculate_angle(dest, global_car_position) - last_heading_in_thread != 0:
         global_car_position = dest  # save global car position for next potential run
         dest = update_reference_frame(dest, global_car_position)
@@ -452,5 +453,6 @@ if __name__ == '__main__':
     route_continuously_no_detection(goal)
 
     # GOAL NUMBER 2 (left turn from goal 1)
+    print("MOVING TO SECOND DESTINATION")
     second_goal = (2 * settings.GRID_SIZE - 2, settings.GRID_SIZE*2 - 2)
     route_continuously_no_detection(second_goal)
