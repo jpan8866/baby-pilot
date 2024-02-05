@@ -2,6 +2,7 @@ from advanced_mapping import scan_environment
 from utils import mark_path_on_grid, find_edge_point
 
 import picar_4wd as fc
+import vehicle_control
 import threading
 import path_finder
 import numpy as np
@@ -162,7 +163,7 @@ def follow_path(path, power=1):
             fc.stop()
             prev_angle = angle
             print("moving forward...")
-            drive(consecutive_points)
+            vehicle_control.drive_calculated(consecutive_points)
 
             fc.stop()
             print("stopped. Finding next waypoint...")
