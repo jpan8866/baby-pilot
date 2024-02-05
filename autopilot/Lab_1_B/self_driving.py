@@ -370,7 +370,7 @@ def update_reference_frame(dest, start) -> tuple:
 
     # update goal coordinate to fit in car's new reference frame, note angle is 0 since heading toward goal
     distance = ((start[0] - dest[0])**2 + (start[1] - dest[1])**2)**0.5
-    return CAR_POS[0], distance
+    return CAR_POS[0], int(distance)
 
 
 def route_continuously_no_detection(dest):
@@ -405,6 +405,7 @@ def route_continuously_no_detection(dest):
         if 0 <= dest[0] <= settings.GRID_SIZE and 0 <= dest[1] < settings.GRID_SIZE:
             print("Goal within current map")
             goal_node = path_finder.Node(dest[0], dest[1])
+            print("destination in final grid run: ", dest)
             path = path_finder.a_star_search(grid, start_node, goal_node)
             # print(path)
             # visualize map
@@ -432,7 +433,7 @@ def route_continuously_no_detection(dest):
                 print("No path generated")
                 break
 
-            heading = follow_path(local_path)
+            last_heading_in_thread = follow_path(local_path)
             # update global goal
             dest = (dest[0] - (local_goal[0] - CAR_POS[0]), dest[1] - (local_goal[1] - CAR_POS[1]))
             print("new goal: ", dest)
