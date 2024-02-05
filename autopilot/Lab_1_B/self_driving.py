@@ -447,8 +447,10 @@ def route_continuously_no_detection(dest):
 
 
 if __name__ == '__main__':
-    # start = path_finder.Node(settings.GRID_SIZE // 2, 0)  # start position defined by CAR_POS
+    # GOAL NUMBER 1
     goal = (settings.GRID_SIZE // 2, settings.GRID_SIZE*2 - 2)
-    # second_goal = (settings.GRID_SIZE -1, settings.GRID_SIZE*2 - 2)
     route_continuously_no_detection(goal)
-    # route_continuously(second_goal)
+
+    # GOAL NUMBER 2 (left turn from goal 1)
+    second_goal = (2 * settings.GRID_SIZE - 2, settings.GRID_SIZE*2 - 2)
+    route_continuously_no_detection(second_goal)
