@@ -116,7 +116,7 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
     cap.release()
 
 
-def follow_path(path, power=10):
+def follow_path(path, power=1):
     global last_heading_in_thread
     # Follow the path using the car
     print("following path....")
