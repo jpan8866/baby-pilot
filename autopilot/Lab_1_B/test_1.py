@@ -13,7 +13,7 @@ import vehicle_control
 #         fc.stop()
 
 def move_car(x: int):
-    vehicle_control(x)
+    vehicle_control.drive_calculated(x)
 
 if __name__ == "__main__":
     # parser = argparse.ArgumentParser(description="sleep time?")
