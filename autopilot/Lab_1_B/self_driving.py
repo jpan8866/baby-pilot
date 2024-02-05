@@ -102,7 +102,7 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
                         print("Clearing stop event")
                         stop_event.clear()
                         traffic_cleared.set()
-        traffic_cleared.unset()
+        traffic_cleared.clear()
 
         # Calculate the FPS
         end_time = time.time()
