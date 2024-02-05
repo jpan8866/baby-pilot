@@ -1,11 +1,15 @@
 import argparse
 import picar_4wd as fc
 import time
-fc.forward(1)
 
 def move_car(t: int):
-    fc.forward(1)
-    time.sleep(t)
+    try:
+        fc.forward(1)
+        time.sleep(t)
+        fc.stop()
+    finally:
+        print(1)
+        fc.stop()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="sleep time?")
