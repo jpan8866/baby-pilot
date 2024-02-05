@@ -1,6 +1,6 @@
 import numpy as np
 # from utils import visualize_map
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import picar_4wd as fc
 import settings
 
@@ -37,7 +37,7 @@ def update_grid(grid, angle, distance, last_angle, last_distance):
     x1 += CAR_POS[0]
     y1 += CAR_POS[1]
     if 0 <= x1 < GRID_SIZE and 0 <= y1 < GRID_SIZE:
-        add_point(grid, x1, y1)
+        add_padding(grid, x1, y1)
         if last_angle is not None:
             x0, y0 = polar_to_cartesian(last_angle, last_distance)
             x0 += CAR_POS[0]
@@ -45,7 +45,7 @@ def update_grid(grid, angle, distance, last_angle, last_distance):
             if 0 <= x0 < GRID_SIZE and 0 <= y0 < GRID_SIZE and euclidean_distance(x0, y0, x1, y1) <= settings.MIN_DISTANCE_TO_INTERPOLATE:
                 draw_line(grid, x0, y0, x1, y1)
 
-def add_point(grid, x, y):
+def add_padding(grid, x, y):
     """
     Add padding of number of cells equal to padding_size in each direction around a given point (x, y) in the grid.
     """
@@ -91,7 +91,7 @@ def draw_line(grid, x0, y0, x1, y1):
 
     while True:
         if 0 <= x0 < GRID_SIZE and 0 <= y0 < GRID_SIZE:
-            add_point(grid, x0, y0)  # Set the point on the grid
+            add_padding(grid, x0, y0)  # Set the point on the grid
 
         if x0 == x1 and y0 == y1:
             break
@@ -117,11 +117,13 @@ def draw_line(grid, x0, y0, x1, y1):
 # print(np.transpose(grid))
 # visualize_map(grid)
 
-# grid[CAR_POS] = 2
-# visual_grid = np.transpose(grid)
-# # Display the transposed grid
-# plt.figure(figsize=(8, 8))
-# plt.title("Mapping")
-# plt.imshow(visual_grid, cmap='gray', origin='lower')
-# plt.colorbar()
-# plt.show()
+if __name__ == "__main__":
+    grid = scan_environment()
+    grid[CAR_POS] = 3
+    visual_grid = np.transpose(grid)
+    # Display the transposed grid
+    plt.figure(figsize=(8, 8))
+    plt.title("Advanced Mapping")
+    plt.imshow(visual_grid, cmap='gray', origin='lower')
+    plt.colorbar()
+    plt.show()

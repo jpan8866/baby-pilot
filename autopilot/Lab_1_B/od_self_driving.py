@@ -103,7 +103,7 @@ def route():
     goal = path_finder.Node(settings.GRID_SIZE // 2, settings.GRID_SIZE - 1)
 
     # Run A* algorithm
-    path = path_finder.a_star_search_4dir(scanned_grid, start, goal)
+    path = path_finder.a_star_search(scanned_grid, start, goal)
     print("Path: ", path)
     print("Path length: ", len(path))
 

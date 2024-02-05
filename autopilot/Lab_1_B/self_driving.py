@@ -115,7 +115,7 @@ def run_object_detection(model: str, camera_id: int, width: int, height: int, nu
     cap.release()
 
 
-def follow_path(path, sleep_factor=0.05, power=10):
+def follow_path(path, power=10):
     global last_heading_in_thread
     # Follow the path using the car
     print("following path....")
@@ -165,7 +165,6 @@ def follow_path(path, sleep_factor=0.05, power=10):
 
             fc.stop()
             print("stopped. Finding next waypoint...")
-            time.sleep(sleep_factor)
 
             i += 1
 
@@ -221,7 +220,7 @@ def route():
     goal = path_finder.Node(settings.GRID_SIZE // 2, settings.GRID_SIZE - 1)
 
     # Run A* algorithm
-    path = path_finder.a_star_search_4dir(scanned_grid, start, goal)
+    path = path_finder.a_star_search(scanned_grid, start, goal)
     print("Path: ", path)
     print("Path length: ", len(path))
 
@@ -271,7 +270,7 @@ def route_continuously(goal: tuple):
         if 0 <= goal[0] <= settings.GRID_SIZE and 0 <= goal[1] < settings.GRID_SIZE:
             print("Goal within current map")
             goal_node = path_finder.Node(goal[0], goal[1])
-            path = path_finder.a_star_search_4dir(grid, start_node, goal_node)
+            path = path_finder.a_star_search(grid, start_node, goal_node)
             # print(path)
             # visualize map
             if path:
@@ -301,7 +300,7 @@ def route_continuously(goal: tuple):
 
             print("local goal: ", local_goal)
             local_goal_node = path_finder.Node(local_goal[0], local_goal[1])
-            local_path = path_finder.a_star_search_4dir(grid, start_node, local_goal_node)
+            local_path = path_finder.a_star_search(grid, start_node, local_goal_node)
             print(local_path)
             # visualize map
             if local_path:
@@ -348,4 +347,6 @@ def route_continuously(goal: tuple):
 if __name__ == '__main__':
     # start = path_finder.Node(settings.GRID_SIZE // 2, 0)  # start position defined by CAR_POS
     goal = (settings.GRID_SIZE // 2, settings.GRID_SIZE*2 - 2)
+    # second_goal = (settings.GRID_SIZE -1, settings.GRID_SIZE*2 - 2)
     route_continuously(goal)
+    # route_continuously(second_goal)

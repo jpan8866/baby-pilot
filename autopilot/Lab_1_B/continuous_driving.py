@@ -225,7 +225,7 @@ def route():
     goal = path_finder.Node(settings.GRID_SIZE // 2, settings.GRID_SIZE - 1)
 
     # Run A* algorithm
-    path = path_finder.a_star_search_4dir(scanned_grid, start, goal)
+    path = path_finder.a_star_search(scanned_grid, start, goal)
     print("Path: ", path)
     print("Path length: ", len(path))
 
@@ -313,7 +313,7 @@ def route_continuously(goal_delta_x: int, goal_delta_y: int):
         if (0 <= g_x <= settings.GRID_SIZE and 0 <= g_y < settings.GRID_SIZE):
             print("Condition 1: global target within range of local grid")
             # Run A* algorithm
-            path = path_finder.a_star_search_4dir(scanned_grid, g_start, g_target)
+            path = path_finder.a_star_search(scanned_grid, g_start, g_target)
             print(path)
 
             # Visualize the grid
@@ -336,7 +336,7 @@ def route_continuously(goal_delta_x: int, goal_delta_y: int):
             l_start = path_finder.Node(x=CAR_POS[0], y=CAR_POS[1])
             l_target = path_finder.Node(x=l_x, y=l_y)
             print("local target: ", l_target)
-            edge_path = path_finder.a_star_search_4dir(scanned_grid, l_start, l_target)
+            edge_path = path_finder.a_star_search(scanned_grid, l_start, l_target)
 
             # Visualize the grid
             # visualize_grid(current_grid, edge_path, CAR_POS, local_target)
