@@ -3,12 +3,20 @@ import picar_4wd as fc
 import threading
 import time
 import json
+from video_feed import start_video_feed
 
 HOST = "192.168.0.14"  # IP address of your Raspberry PI
 PORT = 65432           # Port to listen on (non-privileged ports are > 1023)
 POWER = 10             # Power of motors
 
+# ------------------------------- flask server for video feed ---------------------------------
 
+# start flask app in separate thread for video feed
+video_feed_thread = threading.Thread(target=start_video_feed)
+video_feed_thread.start()
+
+
+# ---------------------------------------- socket server ---------------------------------------
 def get_metrics():
     metrics = {
         'battery': fc.power_read(),

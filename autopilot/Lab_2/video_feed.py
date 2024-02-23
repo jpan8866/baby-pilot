@@ -16,15 +16,18 @@ def generate_frames():
         else:
             ret, buffer = cv2.imencode('.jpg', frame)
             frame = buffer.tobytes()
+            # give out frame using generator
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
 @app.route('/video_feed')
 def video_feed():
+    # use multipart/x-mixed-replace to tell client that content will be replaced with new content (i.e. next frame)
+    # simulates smooth video playback
     return Response(generate_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, threaded=True)  # make it accessible on IP address of pi
+def start_video_feed():
+    app.run(host="0.0.0.0", port=5000)  # make it accessible on IP address of pi
