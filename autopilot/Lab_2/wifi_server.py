@@ -55,8 +55,6 @@ def handle_client(client, client_info):
                 fc.stop()
             else:
                 print("Invalid command received: ", command)
-            # Handle other commands similarly
-            client.sendall(data)  # Echo back to client
     except Exception as e:
         print(f"Error handling client {client_info}: {e}")
     finally:
