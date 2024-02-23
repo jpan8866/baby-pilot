@@ -66,6 +66,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen()
     print(f"Server listening on {HOST}:{PORT}")
+    fc.start_speed_thread()  # separate thread to calculate vehicle speed
     try:
         while True:
             client, client_info = s.accept()
