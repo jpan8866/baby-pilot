@@ -56,6 +56,7 @@ def handle_client(client, client_info):
     try:
         while True:
             data = client.recv(1024)  # receive 1024 Bytes of message in binary format
+            print(data)
             if not data:
                 break
             command = data.decode('utf-8').strip()
